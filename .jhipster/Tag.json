@@ -1,0 +1,35 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "scripts",
+            "otherEntityName": "script",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "tags"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "color",
+            "fieldType": "Color",
+            "fieldValues": "RED,BLUE,GREEN,YELLOW,BLACK,BROWN,ORANGE,DARK_BLUE,VIOLET",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20180223165932",
+    "entityTableName": "tag",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}

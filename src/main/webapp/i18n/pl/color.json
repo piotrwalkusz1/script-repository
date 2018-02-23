@@ -1,0 +1,16 @@
+{
+    "scriptRepositoryApp": {
+        "Color" : {
+            "null": "",
+            "RED": "RED",
+            "BLUE": "BLUE",
+            "GREEN": "GREEN",
+            "YELLOW": "YELLOW",
+            "BLACK": "BLACK",
+            "BROWN": "BROWN",
+            "ORANGE": "ORANGE",
+            "DARK_BLUE": "DARK_BLUE",
+            "VIOLET": "VIOLET"
+        }
+    }
+}

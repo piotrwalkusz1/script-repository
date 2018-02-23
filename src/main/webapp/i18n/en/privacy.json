@@ -1,0 +1,9 @@
+{
+    "scriptRepositoryApp": {
+        "Privacy" : {
+            "null": "",
+            "PUBLIC": "PUBLIC",
+            "PRIVATE": "PRIVATE"
+        }
+    }
+}

@@ -1,0 +1,68 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": "required",
+            "relationshipName": "collection",
+            "otherEntityName": "collection",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "scripts",
+            "relationshipName": "tags",
+            "otherEntityName": "tag",
+            "otherEntityField": "id",
+            "ownerSide": true
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength",
+                "pattern"
+            ],
+            "fieldValidateRulesMaxlength": 50,
+            "fieldValidateRulesPattern": "^[a-zA-Z]*$"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 500
+        },
+        {
+            "fieldName": "scriptLanguage",
+            "fieldType": "ScriptLanguage",
+            "fieldValues": "BASH,PYTHON_2,PYTHON_3,GROOVY,KSCRIPT,RUBY",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "code",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text",
+            "fieldValidateRules": [
+                "maxbytes"
+            ],
+            "fieldValidateRulesMaxbytes": 1000000
+        },
+        {
+            "fieldName": "downloadCount",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20180223165933",
+    "entityTableName": "script",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}

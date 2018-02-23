@@ -1,0 +1,29 @@
+
+{
+    "scriptRepositoryApp": {
+        "script" : {
+            "home": {
+                "title": "Scripts",
+                "createLabel": "Create a new Script",
+                "createOrEditLabel": "Create or edit a Script",
+                "search": "Search for Script"
+            },
+            "created": "A new Script is created with identifier {{ param }}",
+            "updated": "A Script is updated with identifier {{ param }}",
+            "deleted": "A Script is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Script {{ id }}?"
+            },
+            "detail": {
+                "title": "Script"
+            },
+            "name": "Name",
+            "description": "Description",
+            "scriptLanguage": "Script Language",
+            "code": "Code",
+            "downloadCount": "Download Count",
+            "collection": "Collection",
+            "tags": "Tags"
+        }
+    }
+}

@@ -43,6 +43,14 @@ public class CacheConfiguration {
             cm.createCache(com.piotrwalkusz.scriptrepository.domain.Authority.class.getName(), jcacheConfiguration);
             cm.createCache(com.piotrwalkusz.scriptrepository.domain.User.class.getName() + ".authorities", jcacheConfiguration);
             cm.createCache(com.piotrwalkusz.scriptrepository.domain.SocialUserConnection.class.getName(), jcacheConfiguration);
+            cm.createCache(com.piotrwalkusz.scriptrepository.domain.Collection.class.getName(), jcacheConfiguration);
+            cm.createCache(com.piotrwalkusz.scriptrepository.domain.Collection.class.getName() + ".sharedUsers", jcacheConfiguration);
+            cm.createCache(com.piotrwalkusz.scriptrepository.domain.Collection.class.getName() + ".scripts", jcacheConfiguration);
+            cm.createCache(com.piotrwalkusz.scriptrepository.domain.Tag.class.getName(), jcacheConfiguration);
+            cm.createCache(com.piotrwalkusz.scriptrepository.domain.Tag.class.getName() + ".scripts", jcacheConfiguration);
+            cm.createCache(com.piotrwalkusz.scriptrepository.domain.Script.class.getName(), jcacheConfiguration);
+            cm.createCache(com.piotrwalkusz.scriptrepository.domain.Script.class.getName() + ".tags", jcacheConfiguration);
+            cm.createCache(com.piotrwalkusz.scriptrepository.domain.User.class.getName() + ".sharedCollections", jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

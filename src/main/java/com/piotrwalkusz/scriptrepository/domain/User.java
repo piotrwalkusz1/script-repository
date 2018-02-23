@@ -9,6 +9,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Email;
 
+import javax.management.AttributeList;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -95,6 +96,12 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "sharedUsers")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @BatchSize(size = 20)
+    private Set<Collection> sharedCollections = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -199,6 +206,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
+    }
+
+    public Set<Collection> getSharedCollections() {
+        return sharedCollections;
+    }
+
+    public void setSharedCollections(Set<Collection> sharedCollections) {
+        this.sharedCollections = sharedCollections;
     }
 
     @Override

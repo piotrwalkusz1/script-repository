@@ -1,0 +1,27 @@
+
+{
+    "scriptRepositoryApp": {
+        "collection" : {
+            "home": {
+                "title": "Collections",
+                "createLabel": "Dodaj Collection",
+                "createOrEditLabel": "Dodaj lub edytuj: Collection",
+                "search": "Szukaj Collection"
+            },
+            "created": "Utworzono nowy Collection z identyfikatorem {{ param }}",
+            "updated": "Uaktualniono Collection z identyfikatorem {{ param }}",
+            "deleted": "Usunięto Collection z identyfikatorem {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Collection {{ id }}?"
+            },
+            "detail": {
+                "title": "Collection"
+            },
+            "name": "Name",
+            "privacy": "Privacy",
+            "owner": "Owner",
+            "sharedUsers": "Shared Users",
+            "scripts": "Scripts"
+        }
+    }
+}

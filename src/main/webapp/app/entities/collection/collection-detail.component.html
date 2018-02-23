@@ -1,0 +1,40 @@
+
+<div *ngIf="collection">
+    <h2><span jhiTranslate="scriptRepositoryApp.collection.detail.title">Collection</span> {{collection.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="scriptRepositoryApp.collection.name">Name</span></dt>
+        <dd>
+            <span>{{collection.name}}</span>
+        </dd>
+        <dt><span jhiTranslate="scriptRepositoryApp.collection.privacy">Privacy</span></dt>
+        <dd>
+            <span jhiTranslate="{{'scriptRepositoryApp.Privacy.' + collection.privacy}}">{{collection.privacy}}</span>
+        </dd>
+        <dt><span jhiTranslate="scriptRepositoryApp.collection.owner">Owner</span></dt>
+        <dd>
+            {{collection.ownerId}}
+        </dd>
+        <dt><span jhiTranslate="scriptRepositoryApp.collection.sharedUsers">Shared Users</span></dt>
+        <dd>
+            <span *ngFor="let sharedUsers of collection.sharedUsers; let last = last">
+                {{sharedUsers.id}}{{last ? '' : ', '}}
+            </span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'collection/'+ collection.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

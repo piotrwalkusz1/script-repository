@@ -1,0 +1,54 @@
+
+<div *ngIf="script">
+    <h2><span jhiTranslate="scriptRepositoryApp.script.detail.title">Script</span> {{script.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="scriptRepositoryApp.script.name">Name</span></dt>
+        <dd>
+            <span>{{script.name}}</span>
+        </dd>
+        <dt><span jhiTranslate="scriptRepositoryApp.script.description">Description</span></dt>
+        <dd>
+            <span>{{script.description}}</span>
+        </dd>
+        <dt><span jhiTranslate="scriptRepositoryApp.script.scriptLanguage">Script Language</span></dt>
+        <dd>
+            <span jhiTranslate="{{'scriptRepositoryApp.ScriptLanguage.' + script.scriptLanguage}}">{{script.scriptLanguage}}</span>
+        </dd>
+        <dt><span jhiTranslate="scriptRepositoryApp.script.code">Code</span></dt>
+        <dd>
+            <span>{{script.code}}</span>
+        </dd>
+        <dt><span jhiTranslate="scriptRepositoryApp.script.downloadCount">Download Count</span></dt>
+        <dd>
+            <span>{{script.downloadCount}}</span>
+        </dd>
+        <dt><span jhiTranslate="scriptRepositoryApp.script.collection">Collection</span></dt>
+        <dd>
+            <div *ngIf="script.collectionId">
+                <a [routerLink]="['/collection', script.collectionId]">{{script.collectionId}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="scriptRepositoryApp.script.tags">Tags</span></dt>
+        <dd>
+            <span *ngFor="let tags of script.tags; let last = last">
+                <a [routerLink]="['/tag', tags?.id ]">{{tags.id}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'script/'+ script.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

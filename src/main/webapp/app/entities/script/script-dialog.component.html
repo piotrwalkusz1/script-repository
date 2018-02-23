@@ -1,0 +1,107 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myScriptLabel" jhiTranslate="scriptRepositoryApp.script.home.createOrEditLabel">Create or edit a Script</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!script.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="script.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="scriptRepositoryApp.script.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                [(ngModel)]="script.name" required maxlength="50" pattern="^[a-zA-Z]*$"/>
+            <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.name?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.name?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 50 }">
+                   This field cannot be longer than 50 characters.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.name?.errors?.pattern" jhiTranslate="entity.validation.pattern" translateValues="{ pattern: 'Name' }">
+                    This field should follow pattern for "Name".
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="scriptRepositoryApp.script.description" for="field_description">Description</label>
+            <input type="text" class="form-control" name="description" id="field_description"
+                [(ngModel)]="script.description" maxlength="500"/>
+            <div [hidden]="!(editForm.controls.description?.dirty && editForm.controls.description?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.description?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 500 }">
+                   This field cannot be longer than 500 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="scriptRepositoryApp.script.scriptLanguage" for="field_scriptLanguage">Script Language</label>
+            <select class="form-control" name="scriptLanguage" [(ngModel)]="script.scriptLanguage" id="field_scriptLanguage"  required>
+                <option value="BASH">{{'scriptRepositoryApp.ScriptLanguage.BASH' | translate}}</option>
+                <option value="PYTHON_2">{{'scriptRepositoryApp.ScriptLanguage.PYTHON_2' | translate}}</option>
+                <option value="PYTHON_3">{{'scriptRepositoryApp.ScriptLanguage.PYTHON_3' | translate}}</option>
+                <option value="GROOVY">{{'scriptRepositoryApp.ScriptLanguage.GROOVY' | translate}}</option>
+                <option value="KSCRIPT">{{'scriptRepositoryApp.ScriptLanguage.KSCRIPT' | translate}}</option>
+                <option value="RUBY">{{'scriptRepositoryApp.ScriptLanguage.RUBY' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.scriptLanguage?.dirty && editForm.controls.scriptLanguage?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.scriptLanguage?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="scriptRepositoryApp.script.code" for="field_code">Code</label>
+            <textarea class="form-control" name="code" id="field_code"
+                [(ngModel)]="script.code" maxbytes="1000000"></textarea>
+            <div [hidden]="!(editForm.controls.code?.dirty && editForm.controls.code?.invalid)">
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.code?.errors?.maxbytes" jhiTranslate="entity.validation.maxbytes" translateValues="{ max: 1000000 }">
+                    This field cannot be more than 1000000.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="scriptRepositoryApp.script.downloadCount" for="field_downloadCount">Download Count</label>
+            <input type="number" class="form-control" name="downloadCount" id="field_downloadCount"
+                [(ngModel)]="script.downloadCount" />
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="scriptRepositoryApp.script.collection" for="field_collection">Collection</label>
+            <select class="form-control" id="field_collection" name="collection" [(ngModel)]="script.collectionId"  required>
+                <option *ngIf="!editForm.value.collection" [ngValue]="null" selected></option>
+                <option [ngValue]="collectionOption.id" *ngFor="let collectionOption of collections; trackBy: trackCollectionById">{{collectionOption.id}}</option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.collection?.dirty && editForm.controls.collection?.invalid)">
+            <small class="form-text text-danger"
+                [hidden]="!editForm.controls.collection?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+            </small>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="scriptRepositoryApp.script.tags" for="field_tags">Tags</label>
+            <select class="form-control" id="field_tags" multiple name="tags" [(ngModel)]="script.tags">
+                <option [ngValue]="getSelected(script.tags, tagOption)" *ngFor="let tagOption of tags; trackBy: trackTagById">{{tagOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

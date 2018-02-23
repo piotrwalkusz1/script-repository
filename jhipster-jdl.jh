@@ -1,0 +1,41 @@
+dto Script, Collection, Tag with mapstruct
+
+enum ScriptLanguage {
+	BASH, PYTHON_2, PYTHON_3, GROOVY, KSCRIPT, RUBY
+}
+
+enum Privacy {
+	PUBLIC, PRIVATE
+}
+
+enum Color {
+	RED, BLUE, GREEN, YELLOW, BLACK, BROWN, ORANGE, DARK_BLUE, VIOLET
+}
+
+entity Collection {
+	name String required,
+    privacy Privacy required
+}
+
+entity Tag {
+	name String required,
+    color Color required
+}
+
+entity Script {
+	name String required maxlength(50) pattern(/^[a-zA-Z]*$/),
+    description String maxlength(500),
+    scriptLanguage ScriptLanguage required,
+    code TextBlob maxbytes(1000000),
+    downloadCount Integer
+}
+
+relationship ManyToOne {
+	Script{collection required} to Collection{scripts},
+    Collection{owner required} to User{collections}
+}
+
+relationship ManyToMany {
+	Collection{sharedUsers} to User{sharedCollections}
+    Script{tags} to Tag{scripts}
+}

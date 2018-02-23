@@ -1,0 +1,25 @@
+
+{
+    "scriptRepositoryApp": {
+        "tag" : {
+            "home": {
+                "title": "Tags",
+                "createLabel": "Dodaj Tag",
+                "createOrEditLabel": "Dodaj lub edytuj: Tag",
+                "search": "Szukaj Tag"
+            },
+            "created": "Utworzono nowy Tag z identyfikatorem {{ param }}",
+            "updated": "Uaktualniono Tag z identyfikatorem {{ param }}",
+            "deleted": "Usunięto Tag z identyfikatorem {{ param }}",
+            "delete": {
+                "question": "Czy na pewno chcesz usunąć Tag {{ id }}?"
+            },
+            "detail": {
+                "title": "Tag"
+            },
+            "name": "Name",
+            "color": "Color",
+            "scripts": "Scripts"
+        }
+    }
+}
