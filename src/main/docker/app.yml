@@ -1,0 +1,19 @@
+version: '2'
+services:
+    scriptrepository-app:
+        image: scriptrepository
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod,swagger
+            - SPRING_DATASOURCE_URL=jdbc:postgresql://scriptrepository-postgresql:5432/ScriptRepository
+            - JHIPSTER_SLEEP=10 # gives time for the database to boot before the application
+            - SPRING_DATA_ELASTICSEARCH_CLUSTER_NODES=scriptrepository-elasticsearch:9300
+        ports:
+            - 8080:8080
+    scriptrepository-postgresql:
+        extends:
+            file: postgresql.yml
+            service: scriptrepository-postgresql
+    scriptrepository-elasticsearch:
+        extends:
+            file: elasticsearch.yml
+            service: scriptrepository-elasticsearch
