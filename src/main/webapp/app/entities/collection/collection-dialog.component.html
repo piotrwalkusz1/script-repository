@@ -53,7 +53,7 @@
         <div class="form-group">
             <label jhiTranslate="scriptRepositoryApp.collection.sharedUsers" for="field_sharedUsers">Shared Users</label>
             <select class="form-control" id="field_sharedUsers" multiple name="sharedUsers" [(ngModel)]="collection.sharedUsers">
-                <option [ngValue]="getSelected(collection.sharedUsers, userOption)" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.id}}</option>
+                <option [ngValue]="getSelected(collection.sharedUsers, userOption).id" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.id}}</option>
             </select>
         </div>
     </div>

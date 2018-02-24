@@ -31,16 +31,16 @@ describe('Collection e2e test', () => {
         collectionDialogPage.close();
     });
 
-   /* it('should create and save Collections', () => {
+    it('should create and save Collections', () => {
         collectionComponentsPage.clickOnCreateButton();
         collectionDialogPage.setNameInput('name');
         expect(collectionDialogPage.getNameInput()).toMatch('name');
         collectionDialogPage.privacySelectLastOption();
         collectionDialogPage.ownerSelectLastOption();
-        // collectionDialogPage.sharedUsersSelectLastOption();
+        collectionDialogPage.sharedUsersSelectLastOption();
         collectionDialogPage.save();
         expect(collectionDialogPage.getSaveButton().isPresent()).toBeFalsy();
-    });*/
+    });
 
     afterAll(() => {
         navBarPage.autoSignOut();

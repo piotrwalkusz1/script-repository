@@ -4,6 +4,7 @@ import com.piotrwalkusz.scriptrepository.ScriptRepositoryApp;
 
 import com.piotrwalkusz.scriptrepository.domain.Collection;
 import com.piotrwalkusz.scriptrepository.domain.User;
+import com.piotrwalkusz.scriptrepository.repository.AuthorityRepository;
 import com.piotrwalkusz.scriptrepository.repository.CollectionRepository;
 import com.piotrwalkusz.scriptrepository.repository.search.CollectionSearchRepository;
 import com.piotrwalkusz.scriptrepository.service.dto.CollectionDTO;
@@ -25,6 +26,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.HashSet;
 import java.util.List;
 
 import static com.piotrwalkusz.scriptrepository.web.rest.TestUtil.createFormattingConversionService;
@@ -97,9 +99,12 @@ public class CollectionResourceIntTest {
             .privacy(DEFAULT_PRIVACY);
         // Add required entity
         User owner = UserResourceIntTest.createEntity(em);
+        User sharedUser = UserResourceIntTest.createEntity(em);
         em.persist(owner);
+        em.persist(sharedUser);
         em.flush();
         collection.setOwner(owner);
+        collection.addSharedUsers(sharedUser);
         return collection;
     }
 

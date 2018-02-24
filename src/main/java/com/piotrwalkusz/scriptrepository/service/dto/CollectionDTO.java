@@ -23,7 +23,7 @@ public class CollectionDTO implements Serializable {
 
     private Long ownerId;
 
-    private Set<UserDTO> sharedUsers = new HashSet<>();
+    private Set<Long> sharedUsers = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -57,11 +57,11 @@ public class CollectionDTO implements Serializable {
         this.ownerId = userId;
     }
 
-    public Set<UserDTO> getSharedUsers() {
+    public Set<Long> getSharedUsers() {
         return sharedUsers;
     }
 
-    public void setSharedUsers(Set<UserDTO> users) {
+    public void setSharedUsers(Set<Long> users) {
         this.sharedUsers = users;
     }
 

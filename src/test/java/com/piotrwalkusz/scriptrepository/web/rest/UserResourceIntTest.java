@@ -4,6 +4,7 @@ import com.piotrwalkusz.scriptrepository.ScriptRepositoryApp;
 import com.piotrwalkusz.scriptrepository.config.CacheConfiguration;
 import com.piotrwalkusz.scriptrepository.domain.Authority;
 import com.piotrwalkusz.scriptrepository.domain.User;
+import com.piotrwalkusz.scriptrepository.repository.AuthorityRepository;
 import com.piotrwalkusz.scriptrepository.repository.UserRepository;
 import com.piotrwalkusz.scriptrepository.repository.search.UserSearchRepository;
 import com.piotrwalkusz.scriptrepository.security.AuthoritiesConstants;
@@ -135,6 +136,12 @@ public class UserResourceIntTest {
         user.setLastName(DEFAULT_LASTNAME);
         user.setImageUrl(DEFAULT_IMAGEURL);
         user.setLangKey(DEFAULT_LANGKEY);
+        Authority authority = new Authority();
+        authority.setName(AuthoritiesConstants.USER);
+        em.merge(authority);
+        HashSet<Authority> authorities = new HashSet<>();
+        authorities.add(authority);
+        user.setAuthorities(authorities);
         return user;
     }
 
@@ -540,12 +547,14 @@ public class UserResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void testUserFromId() {
         assertThat(userMapper.userFromId(DEFAULT_ID).getId()).isEqualTo(DEFAULT_ID);
         assertThat(userMapper.userFromId(null)).isNull();
     }
 
     @Test
+    @Transactional
     public void testUserDTOtoUser() {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(DEFAULT_ID);
@@ -577,6 +586,7 @@ public class UserResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void testUserToUserDTO() {
         user.setId(DEFAULT_ID);
         user.setCreatedBy(DEFAULT_LOGIN);
@@ -608,6 +618,7 @@ public class UserResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void testAuthorityEquals() throws Exception {
         Authority authorityA = new Authority();
         assertThat(authorityA).isEqualTo(authorityA);

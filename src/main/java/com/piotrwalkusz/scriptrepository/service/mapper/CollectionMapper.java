@@ -26,4 +26,11 @@ public interface CollectionMapper extends EntityMapper<CollectionDTO, Collection
         collection.setId(id);
         return collection;
     }
+
+    default Long fromUserToId(User user) {
+        if (user == null) {
+            return null;
+        }
+        return user.getId();
+    }
 }

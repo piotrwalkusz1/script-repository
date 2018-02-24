@@ -11,7 +11,7 @@ export class Collection implements BaseEntity {
         public name?: string,
         public privacy?: Privacy,
         public ownerId?: number,
-        public sharedUsers?: User[],
+        public sharedUsers?: number[],
         public scripts?: BaseEntity[],
     ) {
     }
