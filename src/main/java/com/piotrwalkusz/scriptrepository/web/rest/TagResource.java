@@ -2,35 +2,36 @@ package com.piotrwalkusz.scriptrepository.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.piotrwalkusz.scriptrepository.domain.Tag;
-
 import com.piotrwalkusz.scriptrepository.repository.TagRepository;
 import com.piotrwalkusz.scriptrepository.repository.search.TagSearchRepository;
-import com.piotrwalkusz.scriptrepository.web.rest.errors.BadRequestAlertException;
-import com.piotrwalkusz.scriptrepository.web.rest.util.HeaderUtil;
+import com.piotrwalkusz.scriptrepository.security.AuthoritiesConstants;
 import com.piotrwalkusz.scriptrepository.service.dto.TagDTO;
 import com.piotrwalkusz.scriptrepository.service.mapper.TagMapper;
+import com.piotrwalkusz.scriptrepository.web.rest.errors.BadRequestAlertException;
+import com.piotrwalkusz.scriptrepository.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing Tag.
  */
 @RestController
 @RequestMapping("/api")
+@Secured(AuthoritiesConstants.ADMIN)
 public class TagResource {
 
     private final Logger log = LoggerFactory.getLogger(TagResource.class);
