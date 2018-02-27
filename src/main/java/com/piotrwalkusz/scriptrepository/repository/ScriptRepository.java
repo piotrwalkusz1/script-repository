@@ -19,4 +19,11 @@ public interface ScriptRepository extends JpaRepository<Script, Long> {
     @Query("select script from Script script left join fetch script.tags where script.id =:id")
     Script findOneWithEagerRelationships(@Param("id") Long id);
 
+    boolean existsByCollectionIdAndName(Long collectionId, String name);
+
+    @Query("select script from Collection collection join collection.scripts script where collection.owner.login = :ownerLogin")
+    List<Script> findAllByOwnerLogin(@Param("ownerLogin") String login);
+
+    @Query("select script from Collection collection join collection.scripts script where collection.owner.login = :ownerLogin and collection.privacy = com.piotrwalkusz.scriptrepository.domain.enumeration.Privacy.PUBLIC")
+    List<Script> findAllPublicByOwnerLogin(@Param("ownerLogin") String login);
 }

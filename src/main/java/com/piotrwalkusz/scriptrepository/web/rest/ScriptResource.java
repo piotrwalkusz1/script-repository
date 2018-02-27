@@ -31,7 +31,6 @@ import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
  */
 @RestController
 @RequestMapping("/api")
-@Secured(AuthoritiesConstants.ADMIN)
 public class ScriptResource {
 
     private final Logger log = LoggerFactory.getLogger(ScriptResource.class);
@@ -63,6 +62,9 @@ public class ScriptResource {
         log.debug("REST request to save Script : {}", scriptDTO);
         if (scriptDTO.getId() != null) {
             throw new BadRequestAlertException("A new script cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        if (scriptRepository.existsByCollectionIdAndName(scriptDTO.getCollectionId(), scriptDTO.getName())) {
+            throw new BadRequestAlertException("A script with the same name already exists in this collection", ENTITY_NAME, "nameexists");
         }
         Script script = scriptMapper.toEntity(scriptDTO);
         script = scriptRepository.save(script);

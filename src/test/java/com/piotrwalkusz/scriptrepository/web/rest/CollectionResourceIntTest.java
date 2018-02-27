@@ -22,6 +22,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -140,6 +141,33 @@ public class CollectionResourceIntTest {
 
     @Test
     @Transactional
+    public void createTwoCollectionWithSameNameButDifferentOwner() throws Exception {
+        int databaseSizeBeforeCreate = collectionRepository.findAll().size();
+
+        Collection collection2 = createEntity(em);
+        collection2.setName(collection.getName());
+
+        // Create first Collection
+        CollectionDTO collectionDTO = collectionMapper.toDto(collection);
+        restCollectionMockMvc.perform(post("/api/collections")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(collectionDTO)))
+            .andExpect(status().isCreated());
+
+        // Create second Collection
+        collectionDTO = collectionMapper.toDto(collection2);
+        restCollectionMockMvc.perform(post("/api/collections")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(collectionDTO)))
+            .andExpect(status().isCreated());
+
+        // Validate the Collection in the database
+        List<Collection> collectionList = collectionRepository.findAll();
+        assertThat(collectionList).hasSize(databaseSizeBeforeCreate + 2);
+    }
+
+    @Test
+    @Transactional
     public void createCollectionWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = collectionRepository.findAll().size();
 
@@ -152,6 +180,30 @@ public class CollectionResourceIntTest {
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(collectionDTO)))
             .andExpect(status().isBadRequest());
+
+        // Validate the Collection in the database
+        List<Collection> collectionList = collectionRepository.findAll();
+        assertThat(collectionList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    public void createCollectionWithExistingName() throws Exception {
+        collectionRepository.save(collection);
+
+        int databaseSizeBeforeCreate = collectionRepository.findAll().size();
+
+        Collection collection2 = createEntity(em);
+        collection2.setOwner(collection.getOwner());
+        collection2.setName(collection.getName());
+
+        // Create the Collection
+        CollectionDTO collectionDTO = collectionMapper.toDto(collection2);
+        restCollectionMockMvc.perform(post("/api/collections")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(collectionDTO)))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.title").value("The user already has a collection with this name"));
 
         // Validate the Collection in the database
         List<Collection> collectionList = collectionRepository.findAll();

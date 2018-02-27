@@ -3,4 +3,196 @@
 swagger: "2.0"
 info:
   version: 0.0.1
-paths: {}
+  title: Script Repository
+basePath: /api
+paths:
+  /repository/collections:
+    get:
+      operationId: getAllCollections
+      summary: Get all collections
+      description: Get collections belonging to the user that we can see.
+      parameters:
+        - in: query
+          name: user
+          type: string
+          describe: A user whose collection will be returned
+      responses:
+        200:
+          description: Ok
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Collection'
+    post:
+      operationId: addCollection
+      summary: Add a collection
+      description: Add a collection. The model cannot have the ownerId property set.
+      parameters:
+        - in: body
+          name: collection
+          description: A collection to created.
+          schema:
+            $ref: '#/definitions/Collection'
+      responses:
+        201:
+          description: Created
+          schema:
+            $ref: '#/definitions/Collection'
+  /repository/collections/{id}:
+    get:
+      operationId: getCollectionById
+      summary: Get a collection by id
+      description: >
+        Get a collection by id. If the collection do not belong to the user,
+        is private and is not shared to the user, an unautorized error will be thrown.
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          format: int64
+          required: true
+          description: Id of the collection
+      responses:
+        200:
+          description: Ok
+          schema:
+              $ref: '#/definitions/Collection'
+#    put:
+#      operationId: updateCollectionById
+#      summary: Create or update a collection by id
+#      description: >
+#        Create or update a collection by id. If the collection exists and does
+#        not belong to the user, an unauthorized error will be thrown.
+#      parameters:
+#        - in: path
+#          name: id
+#          type: integer
+#          format: int64
+#          required: true
+#          description: Id of the collection
+#        - in: body
+#          name: collection
+#          schema:
+#            $ref: '#/definitions/Collection'
+#      responses:
+#        201:
+#          description: Created
+#          schema:
+#            $ref: '#/definitions/Collection'
+#        204:
+#          description: Updated
+    delete:
+      operationId: deleteCollectionById
+      summary: Delete a collection by id
+      description: >
+        Delete a collection by id. If the collection exists and does not belong
+        to the user, an unauthorized error will be thrown.
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          format: int64
+          required: true
+          description: Id of the collection
+      responses:
+        204:
+          description: Deleted
+
+  /repository/scripts:
+    get:
+      operationId: getAllScripts
+      summary: Get all scripts
+      description: Get scripts from collections belonging to the user that we can see.
+      parameters:
+        - in: query
+          name: user
+          type: string
+          describe: A user whose scripts will be returned
+      responses:
+        200:
+          description: Ok
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Script'
+    post:
+      operationId: addScript
+      summary: Add a script
+      description: >
+        Add a new script in the collection. If the choosen collection does not
+        belong to the user, an unauthorized error will be thrown.
+      parameters:
+        - in: body
+          name: script
+          schema:
+            $ref: '#/definitions/Script'
+      responses:
+        201:
+          description: Created
+          schema:
+           $ref: '#/definitions/Script'
+  /repository/scripts/{id}:
+    get:
+      operationId: getScriptById
+      summary: Get a script by id
+      description: >
+        Get a script by id. If the script do not belong to the user, containing
+        collection is private and is not shared to the user,
+        an unautorized error will be thrown.
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          format: int64
+          required: true
+          description: Id of the script
+      responses:
+        200:
+          description: Ok
+          schema:
+            $ref: '#/definitions/Script'
+    put:
+      operationId: updateScriptById
+      summary: Update a script by id
+      description: >
+        Update a script by id. If the script does not belong to the user, an unauthorized
+        error will be thrown.
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          format: int64
+          required: true
+          description: Id of the script
+        - in: body
+          name: script
+          schema:
+            $ref: '#/definitions/Script'
+      responses:
+        201:
+          description: Created
+          schema:
+            $ref: '#/definitions/Script'
+        204:
+          description: Updated
+    delete:
+      operationId: deleteScriptById
+      summary: Delete a script by id
+      description: >
+        Delete a script by id. If the script does not belong
+        to the user, an unauthorized error will be thrown.
+      parameters:
+      - in: path
+        name: id
+        type: integer
+        format: int64
+        required: true
+        description: Id of the script
+      responses:
+        204:
+          description: Deleted
+
+definitions:
+  Collection: {}
+  Script: {}
+

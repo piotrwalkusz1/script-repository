@@ -3,6 +3,7 @@ package com.piotrwalkusz.scriptrepository.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.piotrwalkusz.scriptrepository.domain.Collection;
 import com.piotrwalkusz.scriptrepository.repository.CollectionRepository;
+import com.piotrwalkusz.scriptrepository.repository.UserRepository;
 import com.piotrwalkusz.scriptrepository.repository.search.CollectionSearchRepository;
 import com.piotrwalkusz.scriptrepository.security.AuthoritiesConstants;
 import com.piotrwalkusz.scriptrepository.service.dto.CollectionDTO;
@@ -12,6 +13,7 @@ import com.piotrwalkusz.scriptrepository.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +33,6 @@ import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
  */
 @RestController
 @RequestMapping("/api")
-@Secured(AuthoritiesConstants.ADMIN)
 public class CollectionResource {
 
     private final Logger log = LoggerFactory.getLogger(CollectionResource.class);
@@ -43,6 +44,9 @@ public class CollectionResource {
     private final CollectionMapper collectionMapper;
 
     private final CollectionSearchRepository collectionSearchRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public CollectionResource(CollectionRepository collectionRepository, CollectionMapper collectionMapper, CollectionSearchRepository collectionSearchRepository) {
         this.collectionRepository = collectionRepository;
@@ -63,6 +67,9 @@ public class CollectionResource {
         log.debug("REST request to save Collection : {}", collectionDTO);
         if (collectionDTO.getId() != null) {
             throw new BadRequestAlertException("A new collection cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        if (collectionRepository.existsByOwnerIdAndName(collectionDTO.getOwnerId(), collectionDTO.getName())) {
+            throw new BadRequestAlertException("The user already has a collection with this name", ENTITY_NAME, "namexists");
         }
         Collection collection = collectionMapper.toEntity(collectionDTO);
         collection = collectionRepository.save(collection);
@@ -88,6 +95,9 @@ public class CollectionResource {
         log.debug("REST request to update Collection : {}", collectionDTO);
         if (collectionDTO.getId() == null) {
             return createCollection(collectionDTO);
+        }
+        if (collectionRepository.existsByOwnerIdAndName(collectionDTO.getOwnerId(), collectionDTO.getName())) {
+            throw new BadRequestAlertException("The user has already had a collection with this name", ENTITY_NAME, "namexists");
         }
         Collection collection = collectionMapper.toEntity(collectionDTO);
         collection = collectionRepository.save(collection);
@@ -157,5 +167,4 @@ public class CollectionResource {
             .map(collectionMapper::toDto)
             .collect(Collectors.toList());
     }
-
 }

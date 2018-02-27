@@ -171,6 +171,30 @@ public class ScriptResourceIntTest {
 
     @Test
     @Transactional
+    public void createScriptWithExistingName() throws Exception {
+        Script script2 = createEntity(em);
+        scriptRepository.save(script2);
+
+        int databaseSizeBeforeCreate = scriptRepository.findAll().size();
+
+        script.setName(script2.getName());
+        script.setCollection(script2.getCollection());
+
+        // Create the Script
+        ScriptDTO scriptDTO = scriptMapper.toDto(script);
+        restScriptMockMvc.perform(post("/api/scripts")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(scriptDTO)))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.title").value("A script with the same name already exists in this collection"));
+
+        // Validate the Script in the database
+        List<Script> scriptList = scriptRepository.findAll();
+        assertThat(scriptList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
     public void checkNameIsRequired() throws Exception {
         int databaseSizeBeforeTest = scriptRepository.findAll().size();
         // set the field null

@@ -25,6 +25,8 @@ public class CollectionDTO implements Serializable {
 
     private Set<Long> sharedUsers = new HashSet<>();
 
+    private Set<Long> scripts = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -65,6 +67,14 @@ public class CollectionDTO implements Serializable {
         this.sharedUsers = users;
     }
 
+    public Set<Long> getScripts() {
+        return scripts;
+    }
+
+    public void setScripts(Set<Long> scripts) {
+        this.scripts = scripts;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -94,4 +104,6 @@ public class CollectionDTO implements Serializable {
             ", privacy='" + getPrivacy() + "'" +
             "}";
     }
+
+
 }

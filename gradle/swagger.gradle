@@ -18,6 +18,11 @@ swagger {
         'apiPackage'   : 'com.piotrwalkusz.scriptrepository.web.api'
     ]
 
+    importMappings = [
+        'Collection' : 'com.piotrwalkusz.scriptrepository.service.dto.CollectionDTO',
+        'Script' : 'com.piotrwalkusz.scriptrepository.service.dto.ScriptDTO'
+    ]
+
     systemProperties = [
         'models' : '',
         'apis'   : ''
