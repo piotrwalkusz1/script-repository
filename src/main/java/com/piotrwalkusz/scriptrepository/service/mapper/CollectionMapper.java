@@ -8,7 +8,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Collection and its DTO CollectionDTO.
  */
-@Mapper(componentModel = "spring", uses = {UserMapper.class})
+@Mapper(componentModel = "spring", uses = {UserMapper.class, ScriptMapper.class})
 public interface CollectionMapper extends EntityMapper<CollectionDTO, Collection> {
 
     @Mapping(source = "owner.id", target = "ownerId")

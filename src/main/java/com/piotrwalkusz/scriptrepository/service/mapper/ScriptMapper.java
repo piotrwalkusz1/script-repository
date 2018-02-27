@@ -25,4 +25,11 @@ public interface ScriptMapper extends EntityMapper<ScriptDTO, Script> {
         script.setId(id);
         return script;
     }
+
+    default Long fromScript(Script script) {
+        if (script == null) {
+            return null;
+        }
+        return script.getId();
+    }
 }
