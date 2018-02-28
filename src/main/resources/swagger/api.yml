@@ -15,7 +15,7 @@ paths:
         - in: query
           name: user
           type: string
-          describe: A user whose collection will be returned
+          description: A user whose collection will be returned
       responses:
         200:
           description: Ok
@@ -57,30 +57,6 @@ paths:
           description: Ok
           schema:
               $ref: '#/definitions/Collection'
-#    put:
-#      operationId: updateCollectionById
-#      summary: Create or update a collection by id
-#      description: >
-#        Create or update a collection by id. If the collection exists and does
-#        not belong to the user, an unauthorized error will be thrown.
-#      parameters:
-#        - in: path
-#          name: id
-#          type: integer
-#          format: int64
-#          required: true
-#          description: Id of the collection
-#        - in: body
-#          name: collection
-#          schema:
-#            $ref: '#/definitions/Collection'
-#      responses:
-#        201:
-#          description: Created
-#          schema:
-#            $ref: '#/definitions/Collection'
-#        204:
-#          description: Updated
     delete:
       operationId: deleteCollectionById
       summary: Delete a collection by id
@@ -107,7 +83,7 @@ paths:
         - in: query
           name: user
           type: string
-          describe: A user whose scripts will be returned
+          description: A user whose scripts will be returned
       responses:
         200:
           description: Ok

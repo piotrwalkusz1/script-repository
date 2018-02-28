@@ -17,7 +17,6 @@ import com.piotrwalkusz.scriptrepository.service.dto.ScriptDTO;
 import com.piotrwalkusz.scriptrepository.service.mapper.CollectionMapper;
 import com.piotrwalkusz.scriptrepository.service.mapper.ScriptMapper;
 import com.piotrwalkusz.scriptrepository.web.rest.errors.ExceptionTranslator;
-import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -30,14 +29,11 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
-import java.io.IOException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;

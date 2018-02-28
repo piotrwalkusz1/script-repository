@@ -11,10 +11,13 @@ import com.piotrwalkusz.scriptrepository.service.mapper.CollectionMapper;
 import com.piotrwalkusz.scriptrepository.service.mapper.ScriptMapper;
 import com.piotrwalkusz.scriptrepository.util.ExceptionUtils;
 import com.piotrwalkusz.scriptrepository.web.api.RepositoryApi;
+import com.piotrwalkusz.scriptrepository.web.rest.CollectionResource;
+import com.piotrwalkusz.scriptrepository.web.rest.ScriptResource;
 import com.piotrwalkusz.scriptrepository.web.rest.errors.BadRequestAlertException;
 import com.piotrwalkusz.scriptrepository.web.rest.errors.InternalServerErrorException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
@@ -24,7 +27,7 @@ import javax.persistence.criteria.*;
 import javax.validation.Valid;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/api")
 public class RepositoryResource implements RepositoryApi {
 

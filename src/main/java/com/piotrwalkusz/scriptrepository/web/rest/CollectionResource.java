@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -33,6 +34,7 @@ import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
  */
 @RestController
 @RequestMapping("/api")
+@Transactional
 public class CollectionResource {
 
     private final Logger log = LoggerFactory.getLogger(CollectionResource.class);
@@ -44,9 +46,6 @@ public class CollectionResource {
     private final CollectionMapper collectionMapper;
 
     private final CollectionSearchRepository collectionSearchRepository;
-
-    @Autowired
-    private UserRepository userRepository;
 
     public CollectionResource(CollectionRepository collectionRepository, CollectionMapper collectionMapper, CollectionSearchRepository collectionSearchRepository) {
         this.collectionRepository = collectionRepository;
@@ -119,7 +118,7 @@ public class CollectionResource {
         log.debug("REST request to get all Collections");
         List<Collection> collections = collectionRepository.findAllWithEagerRelationships();
         return collectionMapper.toDto(collections);
-        }
+    }
 
     /**
      * GET  /collections/:id : get the "id" collection.
