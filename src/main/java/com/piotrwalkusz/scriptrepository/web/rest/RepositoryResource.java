@@ -96,7 +96,7 @@ public class RepositoryResource implements RepositoryApi {
     }
 
     @Override
-    public ResponseEntity<List<CollectionDTO>> getAllCollections(@RequestParam String user) {
+    public ResponseEntity<List<CollectionDTO>> getAllCollections(@RequestParam(required = false) String user) {
         List<Collection> collections;
         User currentUser = getUser();
         if (user == null || user.equals(currentUser.getLogin())) {
@@ -108,7 +108,7 @@ public class RepositoryResource implements RepositoryApi {
     }
 
     @Override
-    public ResponseEntity<List<ScriptDTO>> getAllScripts(@RequestParam String user) {
+    public ResponseEntity<List<ScriptDTO>> getAllScripts(@RequestParam(required = false) String user) {
         List<Script> scripts;
         User currentUser = getUser();
         if (user == null || user.equals(currentUser.getLogin())) {
