@@ -225,6 +225,7 @@ dependencies {
     compile "org.springframework.social:spring-social-google"
     compile "org.springframework.social:spring-social-facebook"
     compile "org.springframework.social:spring-social-twitter"
+    testCompile group: 'com.google.guava', name: 'guava', version: '22.0'
     testCompile "com.jayway.jsonpath:json-path"
     testCompile "info.cukes:cucumber-junit"
     testCompile "info.cukes:cucumber-spring"
@@ -238,6 +239,7 @@ dependencies {
     testCompile "org.mockito:mockito-core"
     testCompile "com.mattbertolini:liquibase-slf4j"
     testCompile "org.hamcrest:hamcrest-library"
+    testCompile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.9.1'
     optional ("org.springframework.boot:spring-boot-configuration-processor") {
         exclude group: 'com.vaadin.external.google', module: 'android-json'
     }

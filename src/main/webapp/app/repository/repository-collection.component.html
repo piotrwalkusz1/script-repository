@@ -1,0 +1,4 @@
+<div *ngIf="collection">
+    <div id="collection-name">{{collection.name}}</div>
+    <div id="collection-privacy">{{'scriptRepositoryApp.collection.' + collection.privacy.toLowerCase() | translate}}</div>
+</div>

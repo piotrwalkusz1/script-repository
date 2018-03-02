@@ -18,6 +18,14 @@
                     </span>
                 </a>
             </li>
+            <li *jhiHasAnyAuthority="'ROLE_USER'" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a id="repository-link" class="nav-link" routerLink="/repository" (click)="collapseNavbar()">
+                    <span>
+                        <i class="fa fa-home" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.repository">Repository</span>
+                    </span>
+                </a>
+            </li>
             <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
             <li *jhiHasAnyAuthority="'ROLE_ADMIN'" ngbDropdown class="nav-item dropdown pointer" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu">

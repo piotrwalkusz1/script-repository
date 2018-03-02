@@ -1,0 +1,8 @@
+<div class="row">
+    <select id="collection-list" [(ngModel)]="selectedCollection">
+        <option *ngFor="let c of collections" [ngValue]="c">{{c.name}}</option>
+    </select>
+</div>
+<div class="row">
+    <jhi-repository-collection [collection]="selectedCollection"></jhi-repository-collection>
+</div>

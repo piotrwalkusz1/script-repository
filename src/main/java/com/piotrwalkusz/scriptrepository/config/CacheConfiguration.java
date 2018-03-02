@@ -51,6 +51,7 @@ public class CacheConfiguration {
             cm.createCache(com.piotrwalkusz.scriptrepository.domain.Script.class.getName(), jcacheConfiguration);
             cm.createCache(com.piotrwalkusz.scriptrepository.domain.Script.class.getName() + ".tags", jcacheConfiguration);
             cm.createCache(com.piotrwalkusz.scriptrepository.domain.User.class.getName() + ".sharedCollections", jcacheConfiguration);
+            cm.createCache(com.piotrwalkusz.scriptrepository.domain.User.class.getName() + ".collections", jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

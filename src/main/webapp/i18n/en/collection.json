@@ -17,6 +17,8 @@
             "detail": {
                 "title": "Collection"
             },
+            "private": "Private",
+            "public": "Public",
             "name": "Name",
             "privacy": "Privacy",
             "owner": "Owner",

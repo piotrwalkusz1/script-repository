@@ -51,7 +51,7 @@ public class Collection implements Serializable {
                inverseJoinColumns = @JoinColumn(name="shared_users_id", referencedColumnName="id"))
     private Set<User> sharedUsers = new HashSet<>();
 
-    @OneToMany(mappedBy = "collection")
+    @OneToMany(mappedBy = "collection", cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Script> scripts = new HashSet<>();

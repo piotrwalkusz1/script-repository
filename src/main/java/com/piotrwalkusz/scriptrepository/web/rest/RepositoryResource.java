@@ -100,9 +100,9 @@ public class RepositoryResource implements RepositoryApi {
         List<Collection> collections;
         User currentUser = getUser();
         if (user == null || user.equals(currentUser.getLogin())) {
-            collections = collectionRepository.findByOwner(currentUser.getId());
+            collections = collectionRepository.findByOwnerWithEagerRelationships(currentUser.getId());
         } else {
-            collections = collectionRepository.findPublicByOwnerLogin(user);
+            collections = collectionRepository.findPublicByOwnerLoginWithEagerRelationships(user);
         }
         return ResponseEntity.ok(collectionMapper.toDto(collections));
     }

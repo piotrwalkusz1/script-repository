@@ -1,4 +1,4 @@
-import { BaseEntity, User } from './../../shared';
+import { BaseEntity } from './../../shared';
 
 export const enum Privacy {
     'PUBLIC',

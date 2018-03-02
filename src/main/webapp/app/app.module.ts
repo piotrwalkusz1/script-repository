@@ -27,6 +27,7 @@ import {
     ActiveMenuDirective,
     ErrorComponent
 } from './layouts';
+import {ScriptRepositoryRepositoryModule} from './repository';
 
 @NgModule({
     imports: [
@@ -38,6 +39,7 @@ import {
         ScriptRepositoryAdminModule,
         ScriptRepositoryAccountModule,
         ScriptRepositoryEntityModule,
+        ScriptRepositoryRepositoryModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [
