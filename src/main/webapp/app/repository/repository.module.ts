@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { RepositoryComponent, REPOSITORY_ROUTE } from './';
 import {ScriptRepositorySharedModule} from '../shared';
 import {RepositoryService} from './repository.service';
-import {RepositoryCollectionComponent} from './repository-collection.component';
+import {RepositoryCollectionDetailsComponent} from './repository-collection-details.component';
 
 @NgModule({
     imports: [
@@ -13,7 +13,7 @@ import {RepositoryCollectionComponent} from './repository-collection.component';
     ],
     declarations: [
         RepositoryComponent,
-        RepositoryCollectionComponent
+        RepositoryCollectionDetailsComponent
     ],
     entryComponents: [],
     providers: [

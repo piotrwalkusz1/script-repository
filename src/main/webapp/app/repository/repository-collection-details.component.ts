@@ -7,10 +7,10 @@ import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
 import {JhiAlertService} from 'ng-jhipster';
 
 @Component({
-    selector: 'jhi-repository-collection',
-    templateUrl: './repository-collection.component.html'
+    selector: 'jhi-repository-collection-details',
+    templateUrl: './repository-collection-details.component.html'
 })
-export class RepositoryCollectionComponent implements OnInit, OnChanges {
+export class RepositoryCollectionDetailsComponent implements OnInit, OnChanges {
 
     @Input() collection: Collection;
     scripts: Script[] = [];
