@@ -3,6 +3,7 @@ import {Collection} from '../entities/collection';
 import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
 import {JhiAlertService} from 'ng-jhipster';
 import {RepositoryService} from './repository.service';
+import {Script} from '../entities/script';
 
 @Component({
     selector: 'jhi-repository',

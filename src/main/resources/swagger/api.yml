@@ -73,7 +73,25 @@ paths:
       responses:
         204:
           description: Deleted
-
+  /repository/collections/{id}/scripts:
+    get:
+      operationId: getScriptsFromCollection
+      summary: Get scripts from collection
+      description: Get scripts from collection
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          format: int64
+          required: true
+          description: Id of the collection
+      responses:
+        200:
+          description: Ok
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Script'
   /repository/scripts:
     get:
       operationId: getAllScripts

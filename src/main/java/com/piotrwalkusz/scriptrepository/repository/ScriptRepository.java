@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
+import org.springframework.web.bind.annotation.PathVariable;
+
 import java.util.List;
 
 /**
@@ -26,4 +28,7 @@ public interface ScriptRepository extends JpaRepository<Script, Long> {
 
     @Query("select script from Collection collection join collection.scripts script where collection.owner.login = :ownerLogin and collection.privacy = com.piotrwalkusz.scriptrepository.domain.enumeration.Privacy.PUBLIC")
     List<Script> findAllPublicByOwnerLogin(@Param("ownerLogin") String login);
+
+    @Query("select script from Collection collection join collection.scripts script left join fetch script.tags where collection.id = :collectionId")
+    List<Script> findAllByCollectionIdWithEagerRelationships(@Param("collectionId") Long collectionId);
 }

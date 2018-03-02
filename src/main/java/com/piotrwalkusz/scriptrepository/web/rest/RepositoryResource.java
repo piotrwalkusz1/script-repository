@@ -11,13 +11,10 @@ import com.piotrwalkusz.scriptrepository.service.mapper.CollectionMapper;
 import com.piotrwalkusz.scriptrepository.service.mapper.ScriptMapper;
 import com.piotrwalkusz.scriptrepository.util.ExceptionUtils;
 import com.piotrwalkusz.scriptrepository.web.api.RepositoryApi;
-import com.piotrwalkusz.scriptrepository.web.rest.CollectionResource;
-import com.piotrwalkusz.scriptrepository.web.rest.ScriptResource;
 import com.piotrwalkusz.scriptrepository.web.rest.errors.BadRequestAlertException;
 import com.piotrwalkusz.scriptrepository.web.rest.errors.InternalServerErrorException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
@@ -152,6 +149,18 @@ public class RepositoryResource implements RepositoryApi {
             }
         } catch (NoResultException ex) {
             throw new BadRequestAlertException("A script with this id is not found", "Script", "notexists");
+        }
+    }
+
+    @Override
+    public ResponseEntity<List<ScriptDTO>> getScriptsFromCollection(@PathVariable Long id) {
+        User user = getUser();
+        Collection collection = collectionRepository.findOneWithEagerRelationships(id);
+        if (collection.getPrivacy() == Privacy.PUBLIC || collection.getOwner().equals(user) || collection.getSharedUsers().contains(new User(id))) {
+            List<ScriptDTO> scripts = scriptMapper.toDto(scriptRepository.findAllByCollectionIdWithEagerRelationships(collection.getId()));
+            return ResponseEntity.ok(scripts);
+        } else {
+            throw new BadRequestAlertException("You have not access to this collection", "Collection", "noaccess");
         }
     }
 

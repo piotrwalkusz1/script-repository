@@ -1,4 +1,8 @@
 <div *ngIf="collection">
     <div id="collection-name">{{collection.name}}</div>
     <div id="collection-privacy">{{'scriptRepositoryApp.collection.' + collection.privacy.toLowerCase() | translate}}</div>
+
+    <div id="scripts">
+        <a *ngFor="let script of scripts" routerLink="/repository/scripts/{{script.id}}">{{script.name}}</a>
+    </div>
 </div>
