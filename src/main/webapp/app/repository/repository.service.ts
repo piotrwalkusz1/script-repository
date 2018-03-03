@@ -9,6 +9,7 @@ import {Script} from '../entities/script';
 export class RepositoryService {
 
     private collectionsUrl = SERVER_API_URL + 'api/repository/collections';
+    private scriptsUrl = SERVER_API_URL + 'api/repository/scripts';
 
     constructor(private httpClient: HttpClient) {}
 
@@ -18,5 +19,9 @@ export class RepositoryService {
 
     getAllScriptsFromCollection(id: number): Observable<HttpResponse<Script[]>> {
         return this.httpClient.get<Script[]>(this.collectionsUrl + '/' + id + '/scripts', { observe: 'response' });
+    }
+
+    getScript(id: number): Observable<HttpResponse<Script>> {
+        return this.httpClient.get<Script>(this.scriptsUrl + '/' + id, { observe: 'response' });
     }
 }

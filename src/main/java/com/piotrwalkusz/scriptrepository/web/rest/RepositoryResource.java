@@ -132,6 +132,7 @@ public class RepositoryResource implements RepositoryApi {
         CriteriaQuery<Tuple> query = cb.createTupleQuery();
         Root<Script> script = query.from(Script.class);
         Join<Script, Collection> collection = script.join(Script_.collection);
+        script.fetch(Script_.tags, JoinType.LEFT);
         Join<Collection, User> user = collection.join(Collection_.owner);
         query.multiselect(script, collection.get(Collection_.privacy), user.get(User_.id))
             .where(cb.and(

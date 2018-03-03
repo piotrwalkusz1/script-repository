@@ -5,6 +5,7 @@
             "home": {
                 "title": "Scripts",
                 "createLabel": "Create a new Script",
+                "updateLabel": "Update a script",
                 "createOrEditLabel": "Create or edit a Script",
                 "search": "Search for Script"
             },
