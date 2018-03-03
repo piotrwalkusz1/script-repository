@@ -1,0 +1,87 @@
+<div class="row">
+    <form *ngIf="script" name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="scriptRepositoryApp.script.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                   [(ngModel)]="script.name" required maxlength="50" pattern="^[a-zA-Z]*$"/>
+            <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
+                <small class="form-text text-danger"
+                       [hidden]="!editForm.controls.name?.errors?.required" jhiTranslate="entity.validation.required">
+                    This field is required.
+                </small>
+                <small class="form-text text-danger"
+                       [hidden]="!editForm.controls.name?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 50 }">
+                    This field cannot be longer than 50 characters.
+                </small>
+                <small class="form-text text-danger"
+                       [hidden]="!editForm.controls.name?.errors?.pattern" jhiTranslate="entity.validation.pattern" translateValues="{ pattern: 'Name' }">
+                    This field should follow pattern for "Name".
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="scriptRepositoryApp.script.description" for="field_description">Description</label>
+            <input type="text" class="form-control" name="description" id="field_description"
+                   [(ngModel)]="script.description" maxlength="500"/>
+            <div [hidden]="!(editForm.controls.description?.dirty && editForm.controls.description?.invalid)">
+                <small class="form-text text-danger"
+                       [hidden]="!editForm.controls.description?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 500 }">
+                    This field cannot be longer than 500 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="scriptRepositoryApp.script.scriptLanguage" for="field_scriptLanguage">Script Language</label>
+            <select class="form-control" name="scriptLanguage" [(ngModel)]="script.scriptLanguage" id="field_scriptLanguage"  required>
+                <option value="BASH">{{'scriptRepositoryApp.ScriptLanguage.BASH' | translate}}</option>
+                <option value="PYTHON_2">{{'scriptRepositoryApp.ScriptLanguage.PYTHON_2' | translate}}</option>
+                <option value="PYTHON_3">{{'scriptRepositoryApp.ScriptLanguage.PYTHON_3' | translate}}</option>
+                <option value="GROOVY">{{'scriptRepositoryApp.ScriptLanguage.GROOVY' | translate}}</option>
+                <option value="KSCRIPT">{{'scriptRepositoryApp.ScriptLanguage.KSCRIPT' | translate}}</option>
+                <option value="RUBY">{{'scriptRepositoryApp.ScriptLanguage.RUBY' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.scriptLanguage?.dirty && editForm.controls.scriptLanguage?.invalid)">
+                <small class="form-text text-danger"
+                       [hidden]="!editForm.controls.scriptLanguage?.errors?.required" jhiTranslate="entity.validation.required">
+                    This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="scriptRepositoryApp.script.code" for="field_code">Code</label>
+            <textarea class="form-control" name="code" id="field_code"
+                      [(ngModel)]="script.code" maxbytes="1000000"></textarea>
+            <div [hidden]="!(editForm.controls.code?.dirty && editForm.controls.code?.invalid)">
+                <small class="form-text text-danger"
+                       [hidden]="!editForm.controls.code?.errors?.maxbytes" jhiTranslate="entity.validation.maxbytes" translateValues="{ max: 1000000 }">
+                    This field cannot be more than 1000000.
+                </small>
+            </div>
+        </div>
+        <div *ngIf="!isNew()" class="form-group">
+            <label class="form-control-label" jhiTranslate="scriptRepositoryApp.script.collection" for="field_collection">Collection</label>
+            <select class="form-control" id="field_collection" name="collection" [(ngModel)]="script.collectionId"  required>
+                <option *ngIf="!editForm.value.collection" [ngValue]="null" selected></option>
+                <option [ngValue]="collectionOption.id" *ngFor="let collectionOption of collections; trackBy: trackCollectionById">{{collectionOption.name}}</option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.collection?.dirty && editForm.controls.collection?.invalid)">
+            <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.collection?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+            </small>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="scriptRepositoryApp.script.tags" for="field_tags">Tags</label>
+            <select class="form-control" id="field_tags" multiple name="tags" [(ngModel)]="script.tags">
+                <option [ngValue]="getSelected(script.tags, tagOption)" *ngFor="let tagOption of tags; trackBy: trackTagById">{{tagOption.id}}</option>
+            </select>
+        </div>
+        <div>
+            <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+            </button>
+        </div>
+    </form>
+</div>

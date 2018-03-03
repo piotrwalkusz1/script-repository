@@ -29,6 +29,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,7 +38,9 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
@@ -316,8 +319,30 @@ public class RepositoryResourceIntTest {
     }
 
     @Test
-    @Ignore
-    public void getAllCollections() {
+    @WithMockUser(username = USERNAME)
+    public void getAllCollections() throws Exception {
+        Collection collection1 = CollectionResourceIntTest.createEntity(entityManager);
+        collection1.setOwner(persistedUser);
+        entityManager.persist(collection1);
+
+        Collection collection2 = CollectionResourceIntTest.createEntity(entityManager);
+        collection2.setOwner(persistedUser);
+        Script script = ScriptResourceIntTest.createEntity(entityManager);
+        entityManager.persist(script);
+        collection2.addScripts(script);
+        entityManager.persist(collection2);
+        script = ScriptResourceIntTest.createEntity(entityManager);
+        entityManager.persist(script);
+        collection2.addScripts(script);
+        entityManager.persist(collection2);
+
+        entityManager.flush();
+        entityManager.clear();
+
+        int size = (int)collectionRepository.findAll().stream().filter((c) -> c.getOwner().getId().equals(persistedUser.getId())).count();
+
+        mockMvc.perform(get("/api/repository/collections"))
+            .andExpect(jsonPath("$", hasSize(size)));
     }
 
     @Test

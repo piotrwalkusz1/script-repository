@@ -27,6 +27,7 @@ export class RepositoryComponent implements OnInit {
         this.repositoryService.getAllCollections().subscribe(
             (res: HttpResponse<Collection[]>) => {
                 this.collections = res.body;
+                console.log(this.collections);
             },
             (res: HttpErrorResponse) => {
                 this.onError(res.message);

@@ -3,6 +3,9 @@
         <option *ngFor="let c of collections" [ngValue]="c">{{c.name}}</option>
     </select>
 </div>
-<div class="row">
-    <jhi-repository-collection-details [collection]="selectedCollection"></jhi-repository-collection-details>
+<div *ngIf="selectedCollection" class="row">
+    <div>
+        <jhi-repository-collection-details [collection]="selectedCollection"></jhi-repository-collection-details>
+        <button routerLink="/repository/collections/{{selectedCollection.id}}/scripts/new" jhiTranslate="scriptRepositoryApp.script.home.createButton">Add new script</button>
+    </div>
 </div>

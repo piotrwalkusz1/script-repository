@@ -24,4 +24,12 @@ export class RepositoryService {
     getScript(id: number): Observable<HttpResponse<Script>> {
         return this.httpClient.get<Script>(this.scriptsUrl + '/' + id, { observe: 'response' });
     }
+
+    updateScript(script: Script): Observable<HttpResponse<void>> {
+        return this.httpClient.put<void>(this.scriptsUrl + '/' + script.id, script,{ observe: 'response' });
+    }
+
+    saveScript(script: Script): Observable<HttpResponse<Script>> {
+        return this.httpClient.post<Script>(this.scriptsUrl, script,{ observe: 'response' });
+    }
 }
