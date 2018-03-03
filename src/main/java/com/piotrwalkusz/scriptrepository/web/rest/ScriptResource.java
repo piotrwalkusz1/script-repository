@@ -93,6 +93,9 @@ public class ScriptResource {
         if (scriptDTO.getId() == null) {
             return createScript(scriptDTO);
         }
+        if (scriptRepository.existsByCollectionIdAndName(scriptDTO.getCollectionId(), scriptDTO.getName())) {
+            throw new BadRequestAlertException("A script with the same name already exists in this collection", ENTITY_NAME, "nameexists");
+        }
         Script script = scriptMapper.toEntity(scriptDTO);
         script = scriptRepository.save(script);
         ScriptDTO result = scriptMapper.toDto(script);
