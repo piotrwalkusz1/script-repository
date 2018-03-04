@@ -29,6 +29,8 @@ public interface ScriptRepository extends JpaRepository<Script, Long> {
 
     boolean existsByCollectionIdAndName(Long collectionId, String name);
 
+    boolean existsAnotherByCollectionIdAndNameAndIdNot(Long collectionId, String name, Long scriptId);
+
     @Query("select script from Collection collection join collection.scripts script where collection.owner.login = :ownerLogin")
     List<Script> findAllByOwnerLogin(@Param("ownerLogin") String login);
 
