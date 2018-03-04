@@ -1,20 +1,29 @@
 package com.piotrwalkusz.scriptrepository.repository.vm;
 
 import com.piotrwalkusz.scriptrepository.domain.Collection;
+import com.piotrwalkusz.scriptrepository.domain.Script;
 
-public class CodeAndCollection {
+public class ScriptAndCollection {
 
-    public CodeAndCollection(String code, Collection collection) {
-        this.code = code;
+    public ScriptAndCollection(Script script, Collection collection) {
+        this.script = script;
         this.collection = collection;
     }
 
+    public Script getScript() {
+        return script;
+    }
+
+    public void setScript(Script script) {
+        this.script = script;
+    }
+
     public String getCode() {
-        return code;
+        return script.getCode();
     }
 
     public void setCode(String code) {
-        this.code = code;
+        script.setCode(code);
     }
 
     public Collection getCollection() {
@@ -25,7 +34,7 @@ public class CodeAndCollection {
         this.collection = collection;
     }
 
-    private String code;
+    private Script script;
     private Collection collection;
 
 

@@ -3,6 +3,11 @@
     <div id="collection-privacy">{{'scriptRepositoryApp.collection.' + collection.privacy.toLowerCase() | translate}}</div>
 
     <div id="scripts">
-        <a *ngFor="let script of scripts" routerLink="/repository/scripts/{{script.id}}">{{script.name}}</a>
+        <ul>
+            <li *ngFor="let script of scripts" routerLink="/repository/scripts/{{script.id}}">
+                <a>{{script.name}}</a>
+            </li>
+        </ul>
+
     </div>
 </div>

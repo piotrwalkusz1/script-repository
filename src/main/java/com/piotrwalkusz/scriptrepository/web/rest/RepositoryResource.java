@@ -4,7 +4,7 @@ import com.piotrwalkusz.scriptrepository.domain.*;
 import com.piotrwalkusz.scriptrepository.domain.enumeration.Privacy;
 import com.piotrwalkusz.scriptrepository.repository.CollectionRepository;
 import com.piotrwalkusz.scriptrepository.repository.ScriptRepository;
-import com.piotrwalkusz.scriptrepository.repository.vm.CodeAndCollection;
+import com.piotrwalkusz.scriptrepository.repository.vm.ScriptAndCollection;
 import com.piotrwalkusz.scriptrepository.service.UserService;
 import com.piotrwalkusz.scriptrepository.service.dto.CollectionDTO;
 import com.piotrwalkusz.scriptrepository.service.dto.ScriptDTO;
@@ -24,7 +24,6 @@ import javax.persistence.Tuple;
 import javax.persistence.criteria.*;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/api")
@@ -109,15 +108,13 @@ public class RepositoryResource implements RepositoryApi {
     }
 
     @Override
+    public ResponseEntity<String> getScriptLanguage(@PathVariable String user, @PathVariable String collection, @PathVariable String script) {
+        return ResponseEntity.ok(tryGetScript(user, collection, script).getScriptLanguage().name());
+    }
+
+    @Override
     public ResponseEntity<String> getScriptCode(@PathVariable String user, @PathVariable String collection, @PathVariable String script) {
-        CodeAndCollection codeAndCollection = scriptRepository.findCodeWithCollectionByUsernameAndCollectionNameAndScriptName(user, collection, script);
-        if (codeAndCollection.getCollection().getPrivacy() == Privacy.PUBLIC ||
-            codeAndCollection.getCollection().getOwner().equals(getUser()) ||
-            codeAndCollection.getCollection().getSharedUsers().contains(getUser())) {
-            return ResponseEntity.ok(codeAndCollection.getCode());
-        } else {
-            throw new BadRequestAlertException("A collection has to be public or you have to be the owner of the collection", "Script", "noaccess");
-        }
+        return ResponseEntity.ok(tryGetScript(user, collection, script).getCode());
     }
 
     @Override
@@ -195,6 +192,17 @@ public class RepositoryResource implements RepositoryApi {
             return ExceptionUtils.wrapCheckedException(() -> scriptResource.updateScript(script));
         } else {
             throw new BadRequestAlertException("Cannot update a script not belonging to you", "Script", "noowner");
+        }
+    }
+
+    private Script tryGetScript(String user, String collection, String script) {
+        ScriptAndCollection scriptAndCollection = scriptRepository.findScriptWithCollectionByUsernameAndCollectionNameAndScriptName(user, collection, script);
+        if (scriptAndCollection.getCollection().getPrivacy() == Privacy.PUBLIC ||
+            scriptAndCollection.getCollection().getOwner().equals(getUser()) ||
+            scriptAndCollection.getCollection().getSharedUsers().contains(getUser())) {
+            return scriptAndCollection.getScript();
+        } else {
+            throw new BadRequestAlertException("A collection has to be public or you have to be the owner of the collection", "Script", "noaccess");
         }
     }
 

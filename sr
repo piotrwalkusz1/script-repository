@@ -48,6 +48,7 @@ function create_script_directory_if_needed() {
 function download_script() {
 	RESULT="$(curl -s -I "${HOST_URL}/api/repository/code/$1/$2/$3" -H "Authorization: Bearer ${JWT_TOKEN}" | head -n 1 | grep 200)"
 	if [[ ! -z "$RESULT" ]]; then
+		curl -s "${HOST_URL}/api/repository/code/$1/$2/$3" > "${DIRECTORY_PATH}${SCRIPTS_PATH}/$1-$2-$3"
 		curl -s "${HOST_URL}/api/repository/code/$1/$2/$3" -H "Authorization: Bearer ${JWT_TOKEN}" > "${DIRECTORY_PATH}${SCRIPTS_PATH}/$1-$2-$3"
 		chmod +x "${DIRECTORY_PATH}${SCRIPTS_PATH}/$1-$2-$3"
 		sha512sum "${DIRECTORY_PATH}${SCRIPTS_PATH}/$1-$2-$3" > "${DIRECTORY_PATH}${SCRIPTS_PATH}/$1-$2-$3.CHECKSUM"
@@ -59,13 +60,15 @@ function download_script() {
 function run_script() {
 	if [[ -f "${DIRECTORY_PATH}${SCRIPTS_PATH}/$1-$2-$3" ]]; then
 		if [[ "$(sha512sum -c "${DIRECTORY_PATH}${SCRIPTS_PATH}/$1-$2-$3.CHECKSUM" 2> /dev/null | cut -d ' ' -f2)" == "OK" ]]; then
-			$("${DIRECTORY_PATH}${SCRIPTS_PATH}/$1-$2-$3")
+			"${DIRECTORY_PATH}${SCRIPTS_PATH}/$1-$2-$3"
 		else
 			echo "Script was changed"
 		fi
 	else
 		download_script "$1" "$2" "$3"
-		$("${DIRECTORY_PATH}${SCRIPTS_PATH}/$1-$2-$3")
+		if [[ ! -z "$RESULT" ]]; then
+			"${DIRECTORY_PATH}${SCRIPTS_PATH}/$1-$2-$3"
+		fi
 	fi
 }
 
@@ -75,5 +78,5 @@ if [[ -z "$JWT_TOKEN" ]]; then
 	login
 fi
 
-run_script user MyCollection a
+run_script
 
