@@ -4,6 +4,7 @@ import com.piotrwalkusz.scriptrepository.domain.*;
 import com.piotrwalkusz.scriptrepository.domain.enumeration.Privacy;
 import com.piotrwalkusz.scriptrepository.repository.CollectionRepository;
 import com.piotrwalkusz.scriptrepository.repository.ScriptRepository;
+import com.piotrwalkusz.scriptrepository.repository.vm.CodeAndCollection;
 import com.piotrwalkusz.scriptrepository.service.UserService;
 import com.piotrwalkusz.scriptrepository.service.dto.CollectionDTO;
 import com.piotrwalkusz.scriptrepository.service.dto.ScriptDTO;
@@ -23,6 +24,7 @@ import javax.persistence.Tuple;
 import javax.persistence.criteria.*;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/api")
@@ -102,6 +104,19 @@ public class RepositoryResource implements RepositoryApi {
             collections = collectionRepository.findPublicByOwnerLoginWithEagerRelationships(user);
         }
         return ResponseEntity.ok(collectionMapper.toDto(collections));
+    }
+
+    @Override
+    public ResponseEntity<String> getScriptCode(@PathVariable String user, @PathVariable String collection, @PathVariable String script) {
+        User currentUser = getUser();
+        CodeAndCollection codeAndCollection = scriptRepository.findCodeWithCollectionByUsernameAndCollectionNameAndScriptName(user, collection, script);
+        if (codeAndCollection.getCollection().getPrivacy() == Privacy.PUBLIC ||
+            codeAndCollection.getCollection().getOwner().equals(currentUser) ||
+            codeAndCollection.getCollection().getSharedUsers().contains(currentUser)) {
+            return ResponseEntity.ok(codeAndCollection.getCode());
+        } else {
+            throw new BadRequestAlertException("A collection has to be public or you have to be the owner of the collection", "Script", "noaccess");
+        }
     }
 
     @Override

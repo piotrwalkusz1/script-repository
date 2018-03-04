@@ -92,6 +92,33 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Script'
+  /repository/code/{user}/{collection}/{script}:
+    get:
+      operationId: getScriptCode
+      summary: Get code of a script
+      description: Get code of a script
+      parameters:
+        - in: path
+          name: user
+          type: string
+          required: true
+          description: Username of a owner of a script
+        - in: path
+          name: collection
+          type: string
+          required: true
+          description: Name of a collection
+        - in: path
+          name: script
+          type: string
+          required: true
+          description: Name of a script
+      responses:
+        200:
+          description: Ok
+          schema:
+            type: string
+  /repository/code-language/{user}/{collection}/{script}:
   /repository/scripts:
     get:
       operationId: getAllScripts
