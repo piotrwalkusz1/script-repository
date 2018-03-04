@@ -108,16 +108,6 @@ public class RepositoryResource implements RepositoryApi {
     }
 
     @Override
-    public ResponseEntity<String> getScriptLanguage(@PathVariable String user, @PathVariable String collection, @PathVariable String script) {
-        return ResponseEntity.ok(tryGetScript(user, collection, script).getScriptLanguage().name());
-    }
-
-    @Override
-    public ResponseEntity<String> getScriptCode(@PathVariable String user, @PathVariable String collection, @PathVariable String script) {
-        return ResponseEntity.ok(tryGetScript(user, collection, script).getCode());
-    }
-
-    @Override
     public ResponseEntity<List<ScriptDTO>> getAllScripts(@RequestParam(required = false) String user) {
         List<Script> scripts;
         User currentUser = getUser();
@@ -167,6 +157,24 @@ public class RepositoryResource implements RepositoryApi {
     }
 
     @Override
+    public ResponseEntity<String> getScriptRawFormat(@PathVariable String user, @PathVariable String collection, @PathVariable String script) {
+        ScriptAndCollection scriptAndCollection = scriptRepository.findScriptWithCollectionByUsernameAndCollectionNameAndScriptName(user, collection, script);
+        if (scriptAndCollection == null) {
+            return ResponseEntity.ok("not found");
+        }
+        if (scriptAndCollection.getCollection().getPrivacy() == Privacy.PUBLIC ||
+            scriptAndCollection.getCollection().getOwner().equals(getUser()) ||
+            scriptAndCollection.getCollection().getSharedUsers().contains(getUser())) {
+            String response = "ok\n" +
+                scriptAndCollection.getScript().getScriptLanguage().name() + "\n" +
+                scriptAndCollection.getCode();
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.ok("no access");
+        }
+    }
+
+    @Override
     public ResponseEntity<List<ScriptDTO>> getScriptsFromCollection(@PathVariable Long id) {
         User user = getUser();
         Collection collection = collectionRepository.findOneWithEagerRelationships(id);
@@ -192,17 +200,6 @@ public class RepositoryResource implements RepositoryApi {
             return ExceptionUtils.wrapCheckedException(() -> scriptResource.updateScript(script));
         } else {
             throw new BadRequestAlertException("Cannot update a script not belonging to you", "Script", "noowner");
-        }
-    }
-
-    private Script tryGetScript(String user, String collection, String script) {
-        ScriptAndCollection scriptAndCollection = scriptRepository.findScriptWithCollectionByUsernameAndCollectionNameAndScriptName(user, collection, script);
-        if (scriptAndCollection.getCollection().getPrivacy() == Privacy.PUBLIC ||
-            scriptAndCollection.getCollection().getOwner().equals(getUser()) ||
-            scriptAndCollection.getCollection().getSharedUsers().contains(getUser())) {
-            return scriptAndCollection.getScript();
-        } else {
-            throw new BadRequestAlertException("A collection has to be public or you have to be the owner of the collection", "Script", "noaccess");
         }
     }
 
