@@ -95,7 +95,7 @@ public class CollectionResource {
         if (collectionDTO.getId() == null) {
             return createCollection(collectionDTO);
         }
-        if (collectionRepository.existsByOwnerIdAndName(collectionDTO.getOwnerId(), collectionDTO.getName())) {
+        if (collectionRepository.existsByOwnerIdAndNameAndIdNot(collectionDTO.getOwnerId(), collectionDTO.getName(), collectionDTO.getId())) {
             throw new BadRequestAlertException("The user has already had a collection with this name", ENTITY_NAME, "namexists");
         }
         Collection collection = collectionMapper.toEntity(collectionDTO);

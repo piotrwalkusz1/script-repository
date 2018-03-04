@@ -46,6 +46,8 @@ public class RepositoryResource implements RepositoryApi {
 
     private final EntityManager entityManager;
 
+    private User currentUser;
+
     public RepositoryResource(UserService userService, CollectionRepository collectionRepository, CollectionResource collectionResource, ScriptResource scriptResource, ScriptRepository scriptRepository, CollectionMapper collectionMapper, ScriptMapper scriptMapper, EntityManager entityManager) {
         this.userService = userService;
         this.collectionRepository = collectionRepository;
@@ -108,11 +110,10 @@ public class RepositoryResource implements RepositoryApi {
 
     @Override
     public ResponseEntity<String> getScriptCode(@PathVariable String user, @PathVariable String collection, @PathVariable String script) {
-        User currentUser = getUser();
         CodeAndCollection codeAndCollection = scriptRepository.findCodeWithCollectionByUsernameAndCollectionNameAndScriptName(user, collection, script);
         if (codeAndCollection.getCollection().getPrivacy() == Privacy.PUBLIC ||
-            codeAndCollection.getCollection().getOwner().equals(currentUser) ||
-            codeAndCollection.getCollection().getSharedUsers().contains(currentUser)) {
+            codeAndCollection.getCollection().getOwner().equals(getUser()) ||
+            codeAndCollection.getCollection().getSharedUsers().contains(getUser())) {
             return ResponseEntity.ok(codeAndCollection.getCode());
         } else {
             throw new BadRequestAlertException("A collection has to be public or you have to be the owner of the collection", "Script", "noaccess");
@@ -198,6 +199,10 @@ public class RepositoryResource implements RepositoryApi {
     }
 
     private User getUser() {
-        return userService.getUser().orElseThrow(() -> new InternalServerErrorException("User is not found in database"));
+        if (currentUser == null) {
+            currentUser = userService.getUser().orElseThrow(() -> new InternalServerErrorException("User is not found in database"));
+        }
+
+        return currentUser;
     }
 }

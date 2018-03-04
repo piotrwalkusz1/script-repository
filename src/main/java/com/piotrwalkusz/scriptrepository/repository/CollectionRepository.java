@@ -32,6 +32,8 @@ public interface CollectionRepository extends JpaRepository<Collection, Long> {
 
     boolean existsByOwnerIdAndName(Long ownerId, String name);
 
+    boolean existsByOwnerIdAndNameAndIdNot(Long ownerId, String name, Long collectionId);
+
     @Query("select distinct collection from Collection collection left join fetch collection.sharedUsers")
     List<Collection> findAllWithEagerRelationships();
 
