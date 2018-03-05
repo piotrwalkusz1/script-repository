@@ -1,6 +1,7 @@
 #!/bin/bash
 
 HOST_URL='http://localhost:8080'
+: ${DIRECTORY_NAME:=.sr}
 : ${DIRECTORY_PATH:=~/.sr}
 JWT_FILE_PATH=/jwt.txt
 SCRIPTS_PATH=/scripts
@@ -67,6 +68,7 @@ function download_script() {
 			case "$(sed '2q;d' $TEMP)" in
 				"BASH") ;;
 				"GROOVY") install_groovy_if_needed;;
+				"PYTHON_2") install_python_2_if_needed;;
 				*) 
 				   echo "Script language is not recognized"
 				   return
@@ -103,6 +105,7 @@ function run_script() {
 	case "$(cat "${DIRECTORY_PATH}${SCRIPTS_PATH}/$1-$2-$3.lang")" in
 		"BASH") bash "${DIRECTORY_PATH}${SCRIPTS_PATH}/$1-$2-$3";;
 		"GROOVY") JAVA_HOME="${DIRECTORY_PATH}${TOOLS_PATH}/java" GROOVY_HOME="${DIRECTORY_PATH}${TOOLS_PATH}/groovy" "${DIRECTORY_PATH}${TOOLS_PATH}/groovy/bin/groovy" "${DIRECTORY_PATH}${SCRIPTS_PATH}/$1-$2-$3";;
+		"PYTHON_2") "${DIRECTORY_PATH}${TOOLS_PATH}/python2/bin/python" "${DIRECTORY_PATH}${SCRIPTS_PATH}/$1-$2-$3";;
 		*) echo "Script language is not recognized";;
 	esac
 }
@@ -128,6 +131,19 @@ function install_java_if_needed() {
 	fi
 }
 
+function install_python_2_if_needed() {
+	if [[ ! -d "${DIRECTORY_PATH}${TOOLS_PATH}/python2" ]]; then
+		PYTHON_ZIP=$(mktemp)
+		wget -q https://www.python.org/ftp/python/2.7.14/Python-2.7.14.tar.xz -O "$PYTHON_ZIP"
+		tar -xf "$PYTHON_ZIP" -C "${DIRECTORY_PATH}${TOOLS_PATH}"
+		"${DIRECTORY_PATH}${TOOLS_PATH}/Python-2.7.14/configure" --prefix="$HOME/${DIRECTORY_NAME}${TOOLS_PATH}/python2"
+		make "${DIRECTORY_PATH}${TOOLS_PATH}/Python-2.7.14" && make install "${DIRECTORY_PATH}${TOOLS_PATH}/Python-2.7.14"
+		rm -r "${DIRECTORY_PATH}${TOOLS_PATH}/Python-2.7.14"
+		rm "$PYTHON_ZIP"
+	fi
+}
+
+
 create_directory_if_needed
 #try_read_jwt_token
 #if [[ -z "$JWT_TOKEN" ]]; then
@@ -135,5 +151,6 @@ create_directory_if_needed
 #fi
 #
 #run_script user MyCollection a
+
 
 download_and_run_script "$1" "$2" "$3"
