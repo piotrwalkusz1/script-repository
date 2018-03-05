@@ -4,6 +4,7 @@ import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
 import {JhiAlertService} from 'ng-jhipster';
 import {RepositoryService} from './repository.service';
 import {Script} from '../entities/script';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
     selector: 'jhi-repository',
@@ -17,6 +18,7 @@ export class RepositoryComponent implements OnInit {
     constructor(
         private repositoryService: RepositoryService,
         private jhiAlertService: JhiAlertService,
+        private route: ActivatedRoute
     ) {}
 
     ngOnInit() {
@@ -27,6 +29,10 @@ export class RepositoryComponent implements OnInit {
         this.repositoryService.getAllCollections().subscribe(
             (res: HttpResponse<Collection[]>) => {
                 this.collections = res.body;
+                let collectionId = this.route.snapshot.params['collectionId'];
+                if (collectionId !== null) {
+                    this.selectedCollection = this.collections.find((col) => col.id === collectionId);
+                }
             },
             (res: HttpErrorResponse) => {
                 this.onError(res.message);

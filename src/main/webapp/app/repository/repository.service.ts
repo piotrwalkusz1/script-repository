@@ -32,4 +32,16 @@ export class RepositoryService {
     saveScript(script: Script): Observable<HttpResponse<Script>> {
         return this.httpClient.post<Script>(this.scriptsUrl, script,{ observe: 'response' });
     }
+
+    saveCollection(collection: Collection): Observable<HttpResponse<Script>> {
+        return this.httpClient.post<Collection>(this.collectionsUrl, collection, { observe: 'response' });
+    }
+
+    updateCollection(collection: Collection): Observable<HttpResponse<void>> {
+        return this.httpClient.put<void>(this.collectionsUrl + '/' + collection.id, collection, { observe: 'response' });
+    }
+
+    getCollection(id: number): Observable<HttpResponse<Collection>> {
+        return this.httpClient.get<Collection>(this.collectionsUrl + '/' + id, { observe: 'response'});
+    }
 }

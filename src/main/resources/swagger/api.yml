@@ -57,6 +57,31 @@ paths:
           description: Ok
           schema:
               $ref: '#/definitions/Collection'
+    put:
+      operationId: updateCollection
+      summary: Update a collection
+      description: Update a collection
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          format: int64
+          required: true
+          description: Id of the collection
+        - in: body
+          name: collection
+          description: Changed collection
+          schema:
+            $ref: '#/definitions/Collection'
+      responses:
+        204:
+          description: Updated
+        201:
+          description: Created
+          schema:
+            $ref: '#/definitions/Collection'
+
+
     delete:
       operationId: deleteCollectionById
       summary: Delete a collection by id

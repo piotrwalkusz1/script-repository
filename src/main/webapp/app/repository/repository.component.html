@@ -7,5 +7,6 @@
     <div>
         <jhi-repository-collection-details [collection]="selectedCollection"></jhi-repository-collection-details>
         <button routerLink="/repository/collections/{{selectedCollection.id}}/scripts/new" jhiTranslate="scriptRepositoryApp.script.home.createButton">Add new script</button>
+        <button routerLink="/repository/collections/{{selectedCollection.id}}/edit" jhiTranslate="entity.action.edit">Edit</button>
     </div>
 </div>

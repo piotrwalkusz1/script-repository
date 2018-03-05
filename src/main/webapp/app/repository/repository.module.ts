@@ -12,6 +12,11 @@ import {
     REPOSITORY_SCRIPT_EDIT_ROUTE,
     REPOSITORY_SCRIPT_NEW_ROUTE
 } from "./repository-script-edit/repository-script-edit.route";
+import { RepositoryCollectionEditComponent } from './repository-collection-edit/repository-collection-edit.component';
+import {
+    REPOSITORY_COLLECTION_EDIT_ROUTE,
+    REPOSITORY_COLLECTION_NEW_ROUTE
+} from "./repository-collection-edit/repository-collection-edit.route";
 
 @NgModule({
     imports: [
@@ -19,13 +24,16 @@ import {
         RouterModule.forChild([REPOSITORY_SCRIPT_ROUTE]),
         RouterModule.forChild([REPOSITORY_SCRIPT_EDIT_ROUTE]),
         RouterModule.forChild([REPOSITORY_SCRIPT_NEW_ROUTE]),
+        RouterModule.forChild([REPOSITORY_COLLECTION_NEW_ROUTE]),
+        RouterModule.forChild([REPOSITORY_COLLECTION_EDIT_ROUTE]),
         ScriptRepositorySharedModule
     ],
     declarations: [
         RepositoryComponent,
         RepositoryCollectionDetailsComponent,
         RepositoryScriptComponent,
-        RepositoryScriptEditComponent
+        RepositoryScriptEditComponent,
+        RepositoryCollectionEditComponent
     ],
     entryComponents: [],
     providers: [

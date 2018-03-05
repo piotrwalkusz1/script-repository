@@ -59,6 +59,18 @@ public class RepositoryResource implements RepositoryApi {
     }
 
     @Override
+    public ResponseEntity<CollectionDTO> updateCollection(@PathVariable Long id, @RequestBody CollectionDTO collection) {
+        if (!collection.getOwnerId().equals(getUser().getId())) {
+            throw new BadRequestAlertException("Owner id has to equal the user id", "Collection", "ownerid");
+        }
+        Collection oldCollection = collectionRepository.findOne(id);
+        if (!oldCollection.getOwner().getId().equals(collection.getOwnerId())) {
+            throw new BadRequestAlertException("Cannot change owner of a collection", "Collection", "ownerchange");
+        }
+        return ExceptionUtils.wrapCheckedException(() -> collectionResource.updateCollection(collection));
+    }
+
+    @Override
     public ResponseEntity<CollectionDTO> addCollection(@Valid @RequestBody CollectionDTO collection) {
         User user = getUser();
         if (collection.getOwnerId() != null && !collection.getOwnerId().equals(user.getId())) {

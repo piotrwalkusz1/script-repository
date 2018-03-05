@@ -37,7 +37,7 @@ public interface CollectionRepository extends JpaRepository<Collection, Long> {
     @Query("select distinct collection from Collection collection left join fetch collection.sharedUsers")
     List<Collection> findAllWithEagerRelationships();
 
-    @Query("select distinct collection from Collection collection left join fetch collection.sharedUsers where collection.id =:id")
+    @Query("select distinct collection from Collection collection left join fetch collection.sharedUsers left join fetch collection.scripts where collection.id =:id")
     Collection findOneWithEagerRelationships(@Param("id") Long id);
 
     @Query("select collection from Collection collection where collection.id = (select script.collection.id from Script script where script.id = :id)")
