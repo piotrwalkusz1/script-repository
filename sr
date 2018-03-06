@@ -136,8 +136,10 @@ function install_python_2_if_needed() {
 		PYTHON_ZIP=$(mktemp)
 		wget -q https://www.python.org/ftp/python/2.7.14/Python-2.7.14.tar.xz -O "$PYTHON_ZIP"
 		tar -xf "$PYTHON_ZIP" -C "${DIRECTORY_PATH}${TOOLS_PATH}"
-		"${DIRECTORY_PATH}${TOOLS_PATH}/Python-2.7.14/configure" --prefix="$HOME/${DIRECTORY_NAME}${TOOLS_PATH}/python2"
-		make "${DIRECTORY_PATH}${TOOLS_PATH}/Python-2.7.14" && make install "${DIRECTORY_PATH}${TOOLS_PATH}/Python-2.7.14"
+		cd "${DIRECTORY_PATH}${TOOLS_PATH}/Python-2.7.14/" 
+		./configure --prefix="$HOME/${DIRECTORY_NAME}${TOOLS_PATH}/python2" &> /dev/null
+		make &> /dev/null && make install &> /dev/null
+		cd ..
 		rm -r "${DIRECTORY_PATH}${TOOLS_PATH}/Python-2.7.14"
 		rm "$PYTHON_ZIP"
 	fi
