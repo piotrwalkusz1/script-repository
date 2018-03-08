@@ -1,13 +1,35 @@
-<div *ngIf="collection">
-    <div id="collection-name">{{collection.name}}</div>
-    <div id="collection-privacy">{{'scriptRepositoryApp.collection.' + collection.privacy.toLowerCase() | translate}}</div>
+<div *ngIf="collection" class="mt-3 mb-3">
+    <dl>
+        <dt><span jhiTranslate="scriptRepositoryApp.collection.name">Name</span></dt>
+        <dd>
+            <span id="collection-name">{{collection.name}}</span>
+        </dd>
+        <dt><span jhiTranslate="scriptRepositoryApp.collection.privacy">Privacy</span></dt>
+        <dd>
+            <span id="collection-privacy">{{'scriptRepositoryApp.collection.' + collection.privacy.toLowerCase() | translate}}</span>
+        </dd>
+        <!--<dt><span jhiTranslate="scriptRepositoryApp.collection.sharedUsers">Shared Users</span></dt>-->
+        <!--<dd>-->
+            <!--<span *ngFor="let sharedUsers of collection.sharedUsers; let last = last">-->
+                <!--{{sharedUsers.id}}{{last ? '' : ', '}}-->
+            <!--</span>-->
+        <!--</dd>-->
+        <div id="scripts" *ngIf="scripts && scripts.length > 0">
+            <dt>Scripts</dt>
+            <dd>
+                <div id="scripts-list" class="list-group">
+                    <a *ngFor="let script of scripts" routerLink="/repository/scripts/{{script.id}}" class="list-group-item list-group-item-action">
+                        {{script.name}}
+                        <span class="badge badge-default badge-pill pull-right" [style.background-color]="getColorFromScriptLanguage(script.scriptLanguage)">
+                            {{'scriptRepositoryApp.ScriptLanguage.' + script.scriptLanguage | translate}}
+                        </span>
+                    </a>
+                </div>
+            </dd>
+        </div>
+    </dl>
+    <!--<div id="collection-name">{{collection.name}}</div>-->
+    <!--<div id="collection-privacy">{{'scriptRepositoryApp.collection.' + collection.privacy.toLowerCase() | translate}}</div>-->
 
-    <div id="scripts">
-        <ul>
-            <li *ngFor="let script of scripts" routerLink="/repository/scripts/{{script.id}}">
-                <a>{{script.name}}</a>
-            </li>
-        </ul>
 
-    </div>
 </div>

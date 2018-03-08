@@ -44,4 +44,8 @@ export class RepositoryService {
     getCollection(id: number): Observable<HttpResponse<Collection>> {
         return this.httpClient.get<Collection>(this.collectionsUrl + '/' + id, { observe: 'response'});
     }
+
+    deleteCollection(id: number): Observable<HttpResponse<void>> {
+        return this.httpClient.delete<void>(this.collectionsUrl + '/' + id, { observe: 'response'});
+    }
 }

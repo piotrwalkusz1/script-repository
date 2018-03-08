@@ -1,12 +1,43 @@
+<ng-template #deleteDialog let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Confirmation</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>Are you sure you want to delete this collection?</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="c('Yes')">Yes</button>
+        <button type="button" class="btn btn-outline-dark" (click)="d('Cancel')">Cancel</button>
+    </div>
+</ng-template>
+
 <div class="row">
-    <select id="collection-list" [(ngModel)]="selectedCollection">
-        <option *ngFor="let c of collections" [ngValue]="c">{{c.name}}</option>
-    </select>
+    <div class="col-12">
+        <div ngbDropdown class="d-inline">
+            <button ngbDropdownToggle class="btn btn-secondary" type="button" id="collections-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{selectedCollection?.name || 'Choose collection'}}
+            </button>
+            <ul ngbDropdownMenu>
+                <li *ngFor="let c of collections" >
+                    <a class="dropdown-item" (click)="chooseCollection(c)">{{c.name}}</a>
+                </li>
+            </ul>
+        </div>
+        <button class="btn" type="button" routerLink="/repository/collections/new">
+            New collection
+        </button>
+    </div>
+
 </div>
 <div *ngIf="selectedCollection" class="row">
-    <div>
+    <div class="col-12">
         <jhi-repository-collection-details [collection]="selectedCollection"></jhi-repository-collection-details>
-        <button routerLink="/repository/collections/{{selectedCollection.id}}/scripts/new" jhiTranslate="scriptRepositoryApp.script.home.createButton">Add new script</button>
-        <button routerLink="/repository/collections/{{selectedCollection.id}}/edit" jhiTranslate="entity.action.edit">Edit</button>
+        <button class="btn" routerLink="/repository/collections/{{selectedCollection.id}}/scripts/new" jhiTranslate="scriptRepositoryApp.script.home.createButton">Add new script</button>
+        <button class="btn" routerLink="/repository/collections/{{selectedCollection.id}}/edit" jhiTranslate="entity.action.edit">Edit</button>
+        <button class="btn btn-danger" (click)="openDeleteDialog(deleteDialog)" jhiTranslate="entity.action.delete">Remove</button>
     </div>
 </div>
+

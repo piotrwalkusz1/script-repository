@@ -5,10 +5,14 @@ import {JhiAlertService} from 'ng-jhipster';
 import {RepositoryService} from './repository.service';
 import {Script} from '../entities/script';
 import {ActivatedRoute} from '@angular/router';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'jhi-repository',
-    templateUrl: './repository.component.html'
+    templateUrl: './repository.component.html',
+    styleUrls: [
+        'repository.scss'
+    ]
 })
 export class RepositoryComponent implements OnInit {
 
@@ -18,7 +22,8 @@ export class RepositoryComponent implements OnInit {
     constructor(
         private repositoryService: RepositoryService,
         private jhiAlertService: JhiAlertService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private modalService: NgbModal
     ) {}
 
     ngOnInit() {
@@ -38,6 +43,30 @@ export class RepositoryComponent implements OnInit {
                 this.onError(res.message);
             }
         );
+    }
+
+    chooseCollection(collection: Collection) {
+        this.selectedCollection = collection;
+    }
+
+    openDeleteDialog(content) {
+        if (this.selectedCollection != null) {
+            this.modalService.open(content).result.then(
+                (result) => {
+                    if (result === 'Yes') {
+                        this.repositoryService.deleteCollection(this.selectedCollection.id).subscribe(
+                            (res) => {
+                                this.selectedCollection = null;
+                            },
+                            (err) => {
+                                this.onError(err.message);
+                            }
+                        )
+                    }
+                },
+                () => {}
+            )
+        }
     }
 
     private onError(error) {

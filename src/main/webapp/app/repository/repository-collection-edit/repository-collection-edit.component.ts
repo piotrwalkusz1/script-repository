@@ -1,6 +1,6 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Collection} from "../../entities/collection";
+import {Collection, Privacy} from "../../entities/collection";
 import {RepositoryService} from "../repository.service";
 import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
 import {JhiAlertService} from 'ng-jhipster';
@@ -39,7 +39,7 @@ export class RepositoryCollectionEditComponent implements OnInit {
         } else {
             this.repositoryService.saveCollection(this.collection).subscribe(
                 (res: HttpResponse<Collection>) => {
-                    this.isSaving = false
+                    this.isSaving = false;
                     this.router.navigateByUrl('/repository', { queryParams: { collectionId: res.body.id } })
                 }
             )
@@ -58,6 +58,7 @@ export class RepositoryCollectionEditComponent implements OnInit {
             )
         } else {
             this.collection = new Collection();
+            this.collection.privacy = Privacy.PRIVATE;
         }
     }
 

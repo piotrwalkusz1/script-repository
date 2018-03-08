@@ -2,12 +2,12 @@
     "scriptRepositoryApp": {
         "ScriptLanguage" : {
             "null": "",
-            "BASH": "BASH",
-            "PYTHON_2": "PYTHON_2",
-            "PYTHON_3": "PYTHON_3",
-            "GROOVY": "GROOVY",
-            "KSCRIPT": "KSCRIPT",
-            "RUBY": "RUBY"
+            "BASH": "Bash",
+            "PYTHON_2": "Python 2",
+            "PYTHON_3": "Python 3",
+            "GROOVY": "Groovy",
+            "KSCRIPT": "KScript",
+            "RUBY": "Ruby"
         }
     }
 }
