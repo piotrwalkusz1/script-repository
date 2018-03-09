@@ -3,7 +3,7 @@ import {OnInit, Component, Input, OnChanges, SimpleChanges, AfterViewChecked} fr
 import {RepositoryService} from './repository.service';
 import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
 import {JhiAlertService} from 'ng-jhipster';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 let Prism = require('prismjs');
 
@@ -21,7 +21,8 @@ export class RepositoryScriptComponent implements OnInit, OnChanges, AfterViewCh
 
     constructor(route: ActivatedRoute,
                 private repositoryService: RepositoryService,
-                private jhiAlertService: JhiAlertService) {
+                private jhiAlertService: JhiAlertService,
+                private router: Router) {
        this.id = route.snapshot.params['id'];
     }
 
@@ -59,6 +60,10 @@ export class RepositoryScriptComponent implements OnInit, OnChanges, AfterViewCh
             case 'RUBY': return 'language-ruby';
             default: return 'language-unknown';
         }
+    }
+
+    back() {
+        this.router.navigateByUrl('/repository/' + this.script.collectionId);
     }
 
     private onError(error) {

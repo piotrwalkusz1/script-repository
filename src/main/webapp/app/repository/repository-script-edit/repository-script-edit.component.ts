@@ -52,7 +52,10 @@ export class RepositoryScriptEditComponent implements OnInit, AfterViewChecked {
         if (!this.codeEditor) {
             let codeArea = $('#field_code')[0];
             if (codeArea) {
-                this.codeEditor = CodeMirror.fromTextArea(codeArea, {mode: this.getModeFromScriptLanguage(this.script.scriptLanguage)});
+                this.codeEditor = CodeMirror.fromTextArea(codeArea, {
+                    mode: this.getModeFromScriptLanguage(this.script.scriptLanguage),
+                    lineNumbers: true
+                });
                 this.codeEditor.setValue(this.script.code);
             }
         }
@@ -106,6 +109,16 @@ export class RepositoryScriptEditComponent implements OnInit, AfterViewChecked {
                     this.onError(res.message);
                 }
             );
+        }
+
+    }
+
+    cancel() {
+        if (this.id === null) {
+            this.router.navigateByUrl('/repository/' + this.script.collectionId);
+        }
+        else {
+            this.router.navigateByUrl('/repository/scripts/' + this.id);
         }
 
     }

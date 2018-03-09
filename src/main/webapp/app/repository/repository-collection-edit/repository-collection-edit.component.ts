@@ -47,11 +47,21 @@ export class RepositoryCollectionEditComponent implements OnInit {
         }
     }
 
+    cancel() {
+        if (this.id) {
+            this.router.navigateByUrl('/repository/' + this.id);
+        }
+        else {
+            this.router.navigateByUrl('/repository');
+        }
+    }
+
     ngOnInit() {
         if (this.id != null) {
             this.repositoryService.getCollection(this.id).subscribe(
                 (res: HttpResponse<Collection>) => {
                     this.collection = res.body;
+                    this.collection.privacy = this.getPrivacyFromString(this.collection.privacy)
                 },
                 (res: HttpErrorResponse) => {
                     this.onError(res.message);
@@ -71,6 +81,14 @@ export class RepositoryCollectionEditComponent implements OnInit {
         switch (privacy) {
             case Privacy.PUBLIC: return 'PUBLIC';
             case Privacy.PRIVATE: return 'PRIVATE';
+            default: throw RangeError('This privacy does not exists');
+        }
+    }
+
+    getPrivacyFromString(privacy): Privacy {
+        switch (privacy) {
+            case 'PUBLIC': return Privacy.PUBLIC;
+            case 'PRIVATE': return Privacy.PRIVATE;
             default: throw RangeError('This privacy does not exists');
         }
     }
