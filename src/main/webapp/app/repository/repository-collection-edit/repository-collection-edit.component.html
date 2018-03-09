@@ -13,9 +13,8 @@
     </div>
     <div class="form-group">
         <label class="form-control-label" jhiTranslate="scriptRepositoryApp.collection.privacy" for="field_privacy">Privacy</label>
-        <select class="form-control" name="privacy" [(ngModel)]="collection.privacy" id="field_privacy"  required>
-            <option value="PUBLIC">{{'scriptRepositoryApp.Privacy.PUBLIC' | translate}}</option>
-            <option value="PRIVATE">{{'scriptRepositoryApp.Privacy.PRIVATE' | translate}}</option>
+        <select class="form-control" name="privacy" [(ngModel)]="collection.privacy" id="field_privacy" required>
+            <option *ngFor="let privacy of getPrivacies()" [value]="privacy">{{'scriptRepositoryApp.Privacy.' + getPrivacyString(privacy) | translate}}</option>
         </select>
         <div [hidden]="!(editForm.controls.privacy?.dirty && editForm.controls.privacy?.invalid)">
             <small class="form-text text-danger"

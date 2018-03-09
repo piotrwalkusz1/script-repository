@@ -1,9 +1,23 @@
-<div class="row">
-    <div *ngIf="script">
-        <div id="script-name">{{script.name}}</div>
-        <div id="script-language">{{script.scriptLanguage}}</div>
-        <div id="script-description">{{script.description}}</div>
-        <div id="script-code">{{script.code}}</div>
-        <button jhiTranslate="entity.action.edit" routerLink="/repository/scripts/{{script.id}}/edit">Edit</button>
+<div *ngIf="script" class="row">
+    <div class="col-12">
+        <dl>
+            <dt><span jhiTranslate="scriptRepositoryApp.script.name">Name</span></dt>
+            <dd>
+                <span>{{script.name}}</span>
+            </dd>
+            <dt><span jhiTranslate="scriptRepositoryApp.script.description">Description</span></dt>
+            <dd>
+                <span>{{script.description}}</span>
+            </dd>
+            <dt><span jhiTranslate="scriptRepositoryApp.script.scriptLanguage">Language</span></dt>
+            <dd>
+                <span>{{'scriptRepositoryApp.ScriptLanguage.' + script.scriptLanguage | translate}}</span>
+            </dd>
+            <dt><span jhiTranslate="scriptRepositoryApp.script.code">Code</span></dt>
+            <dd>
+                <pre [class]="getLanguageClass()"><code [class]="getLanguageClass()">{{script.code}}</code></pre>
+            </dd>
+        </dl>
+        <button class="btn" jhiTranslate="entity.action.edit" routerLink="/repository/scripts/{{script.id}}/edit">Edit</button>
     </div>
 </div>

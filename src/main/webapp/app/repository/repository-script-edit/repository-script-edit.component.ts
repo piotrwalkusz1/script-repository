@@ -1,24 +1,29 @@
-import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
-import {RepositoryService} from "../repository.service";
-import {Script} from "../../entities/script";
-import {ActivatedRoute, Route, Router} from '@angular/router';
+import { Component, OnInit, Input, SimpleChanges, AfterViewInit, AfterViewChecked } from '@angular/core';
+import {RepositoryService} from '../repository.service';
+import {Script, ScriptLanguage} from '../../entities/script';
+import {ActivatedRoute, Router} from '@angular/router';
 import {JhiAlertService} from 'ng-jhipster';
 import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
-import {Principal} from "../../shared";
-import {Collection, CollectionService} from "../../entities/collection";
+import {Collection} from '../../entities/collection';
+
+const $ = require('jquery');
+
+const CodeMirror = require('codemirror');
 
 @Component({
   selector: 'jhi-repository-script-edit',
   templateUrl: './repository-script-edit.component.html',
   styles: []
 })
-export class RepositoryScriptEditComponent implements OnInit {
+export class RepositoryScriptEditComponent implements OnInit, AfterViewChecked {
 
     @Input() id: number;
 
     script: Script;
     isSaving: Boolean;
     collections: Collection[];
+
+    private codeEditor = null;
 
     constructor(route: ActivatedRoute,
                 private repositoryService: RepositoryService,
@@ -43,12 +48,22 @@ export class RepositoryScriptEditComponent implements OnInit {
         this.loadAll();
     }
 
+    ngAfterViewChecked() {
+        if (!this.codeEditor) {
+            let codeArea = $('#field_code')[0];
+            if (codeArea) {
+                this.codeEditor = CodeMirror.fromTextArea(codeArea, {mode: this.getModeFromScriptLanguage(this.script.scriptLanguage)});
+                this.codeEditor.setValue(this.script.code);
+            }
+        }
+    }
+
     loadAll() {
         if (!this.isNew()) {
             this.repositoryService.getScript(this.id).subscribe(
                 (res: HttpResponse<Script>) => {
                     this.script = res.body;
-                },(res: HttpErrorResponse) => {
+                }, (res: HttpErrorResponse) => {
                     this.onError(res.message);
                 }
             );
@@ -60,7 +75,7 @@ export class RepositoryScriptEditComponent implements OnInit {
                 (res: HttpErrorResponse) => {
                     this.onError(res.message);
                 }
-            )
+            );
         }
     }
 
@@ -70,10 +85,12 @@ export class RepositoryScriptEditComponent implements OnInit {
 
     save() {
         this.isSaving = true;
+        this.script.code = this.codeEditor.getValue();
         if (this.id) {
             this.repositoryService.updateScript(this.script).subscribe(
                 () => {
                     this.isSaving = false;
+                    this.router.navigateByUrl('/repository/scripts/' + this.id);
                 },
                 (res: HttpErrorResponse) => {
                     this.isSaving = false;
@@ -88,9 +105,26 @@ export class RepositoryScriptEditComponent implements OnInit {
                 (res: HttpErrorResponse) => {
                     this.onError(res.message);
                 }
-            )
+            );
         }
 
+    }
+
+    onScriptLanguageChanged() {
+        console.log("chenged");
+        this.codeEditor.setOption("mode", this.getModeFromScriptLanguage(this.script.scriptLanguage));
+    }
+
+    private getModeFromScriptLanguage(language): string {
+        switch (language) {
+            case 'BASH': return 'shell';
+            case 'RUBY': return 'ruby';
+            case 'KSCRIPT': return 'clike';
+            case 'PYTHON_3': return 'python';
+            case 'PYTHON_2': return 'python';
+            case 'GROOVY': return 'groovy';
+            default: return '';
+        }
     }
 
     private onError(error) {

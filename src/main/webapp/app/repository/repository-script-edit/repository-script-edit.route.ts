@@ -1,7 +1,6 @@
 import { Route } from '@angular/router';
-import {RepositoryScriptEditComponent} from "./repository-script-edit.component";
-import {UserRouteAccessService} from "../../shared";
-
+import {RepositoryScriptEditComponent} from './repository-script-edit.component';
+import {UserRouteAccessService} from '../../shared';
 
 export const REPOSITORY_SCRIPT_EDIT_ROUTE: Route = {
     path: 'repository/scripts/:scriptId/edit',

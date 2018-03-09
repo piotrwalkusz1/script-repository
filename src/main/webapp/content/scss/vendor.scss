@@ -11,4 +11,8 @@ eg $input-color: red;
 @import 'node_modules/bootstrap/scss/bootstrap';
 @import 'node_modules/font-awesome/scss/font-awesome';
 
+@import 'node_modules/prismjs/themes/prism';
+
+@import 'node_modules/codemirror/lib/codemirror';
+
 /* jhipster-needle-scss-add-vendor JHipster will add new css style */

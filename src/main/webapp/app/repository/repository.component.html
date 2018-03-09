@@ -14,9 +14,9 @@
     </div>
 </ng-template>
 
-<div class="row">
+<div *ngIf="collections" class="row">
     <div class="col-12">
-        <div ngbDropdown class="d-inline">
+        <div *ngIf="collections.length > 0" ngbDropdown class="d-inline">
             <button ngbDropdownToggle class="btn btn-secondary" type="button" id="collections-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 {{selectedCollection?.name || 'Choose collection'}}
             </button>
@@ -30,7 +30,6 @@
             New collection
         </button>
     </div>
-
 </div>
 <div *ngIf="selectedCollection" class="row">
     <div class="col-12">

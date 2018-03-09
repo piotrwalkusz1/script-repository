@@ -1,6 +1,6 @@
 import { Route } from '@angular/router';
-import {UserRouteAccessService} from "../../shared";
-import {RepositoryCollectionEditComponent} from "./repository-collection-edit.component";
+import {UserRouteAccessService} from '../../shared';
+import {RepositoryCollectionEditComponent} from './repository-collection-edit.component';
 
 export const REPOSITORY_COLLECTION_EDIT_ROUTE: Route = {
     path: 'repository/collections/:collectionId/edit',

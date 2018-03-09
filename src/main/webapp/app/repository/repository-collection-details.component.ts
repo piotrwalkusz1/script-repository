@@ -1,11 +1,10 @@
 import {Component, OnInit, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {Collection} from '../entities/collection';
-import { TranslateService } from '@ngx-translate/core';
-import {Script, ScriptLanguage} from "../entities/script";
-import {RepositoryService} from "./repository.service";
+import {TranslateService} from '@ngx-translate/core';
+import {Script} from '../entities/script';
+import {RepositoryService} from './repository.service';
 import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
 import {JhiAlertService} from 'ng-jhipster';
-import {Color} from "../entities/tag";
 
 @Component({
     selector: 'jhi-repository-collection-details',
@@ -16,7 +15,6 @@ export class RepositoryCollectionDetailsComponent implements OnInit, OnChanges {
 
     @Input() collection: Collection;
     scripts: Script[] = [];
-
 
     constructor(private translateService: TranslateService,
                 private repositoryService: RepositoryService,

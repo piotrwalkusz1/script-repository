@@ -1,9 +1,10 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Collection, Privacy} from "../../entities/collection";
-import {RepositoryService} from "../repository.service";
+import {Collection, Privacy} from '../../entities/collection';
+import {RepositoryService} from '../repository.service';
 import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
 import {JhiAlertService} from 'ng-jhipster';
+import * as $ from 'jquery';
 
 @Component({
     selector: 'jhi-repository-collection-edit',
@@ -15,7 +16,7 @@ export class RepositoryCollectionEditComponent implements OnInit {
     @Input() id: number;
 
     collection: Collection;
-    isSaving: boolean = false;
+    isSaving = false;
 
     constructor(route: ActivatedRoute,
                 private repositoryService: RepositoryService,
@@ -35,14 +36,14 @@ export class RepositoryCollectionEditComponent implements OnInit {
                     this.onError(res.message);
                     this.isSaving = false;
                 }
-            )
+            );
         } else {
             this.repositoryService.saveCollection(this.collection).subscribe(
                 (res: HttpResponse<Collection>) => {
                     this.isSaving = false;
-                    this.router.navigateByUrl('/repository', { queryParams: { collectionId: res.body.id } })
+                    this.router.navigateByUrl('/repository/' + res.body.id );
                 }
-            )
+            );
         }
     }
 
@@ -55,10 +56,22 @@ export class RepositoryCollectionEditComponent implements OnInit {
                 (res: HttpErrorResponse) => {
                     this.onError(res.message);
                 }
-            )
+            );
         } else {
             this.collection = new Collection();
             this.collection.privacy = Privacy.PRIVATE;
+        }
+    }
+
+    getPrivacies(): [Privacy] {
+        return [Privacy.PRIVATE, Privacy.PUBLIC];
+    }
+
+    getPrivacyString(privacy: Privacy): string {
+        switch (privacy) {
+            case Privacy.PUBLIC: return 'PUBLIC';
+            case Privacy.PRIVATE: return 'PRIVATE';
+            default: throw RangeError('This privacy does not exists');
         }
     }
 
